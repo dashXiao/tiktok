@@ -43,11 +43,20 @@ remove_container() {
 
 start_container() {
     echo "Starting container for $1..."
-    docker run -d --name "tiktok-$1" \
-    -e service=$1 \
-    --net=host \
-    -v $DIR/config:/app/config \
-    "$IMAGE_NAME"
+    if [ "$1" == "api" ]; then
+        docker run -d --name "tiktok-$1" \
+        -e service=$1 \
+        --network=tiktok_tiktok \
+        -p 10001:10001 \
+        -v $DIR/config:/app/config \
+        "$IMAGE_NAME"
+    else
+        docker run -d --name "tiktok-$1" \
+        -e service=$1 \
+        --network=tiktok_tiktok \
+        -v $DIR/config:/app/config \
+        "$IMAGE_NAME"
+    fi
 }
 
 containers_to_stop=$(docker ps -aq --filter "ancestor=$IMAGE_NAME")
