@@ -19,7 +19,7 @@ import (
 	"github.com/hertz-contrib/gzip"
 	hertzSentinel "github.com/hertz-contrib/opensergo/sentinel/adapter"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	"github.com/ozline/tiktok/cmd/api/biz/middleware/es"
+	// "github.com/ozline/tiktok/cmd/api/biz/middleware/es"
 	"github.com/ozline/tiktok/cmd/api/biz/rpc"
 	"github.com/ozline/tiktok/config"
 	"github.com/ozline/tiktok/pkg/constants"
@@ -44,11 +44,12 @@ func Init() {
 
 	initSentinel()
 
-	es.Init()
+	// es.Init()
 
 	// set log
 	klog.SetLevel(klog.LevelDebug)
-	klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(es.EsHookLog())))
+	// klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(es.EsHookLog())))
+	klog.SetLogger(kitexlogrus.NewLogger())
 }
 
 func main() {
