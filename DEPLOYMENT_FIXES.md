@@ -43,7 +43,8 @@
 
 ### 1. 启动基础环境
 ```bash
-make env-up      # 启动MySQL、Redis、etcd等基础服务
+# 启动MySQL、Redis、etcd等基础服务
+make env-up
 ```
 
 ### 2. 推送配置到etcd（关键步骤）
@@ -54,12 +55,14 @@ docker exec etcd etcdctl put /config/config.yaml "$(cat config/config.yaml)"
 
 ### 3. 构建应用镜像
 ```bash
-make docker      # 构建tiktok应用镜像
+# 构建tiktok应用镜像
+make docker 
 ```
 
 ### 4. 启动所有微服务
 ```bash
-sh docker-run.sh # 启动API网关和所有微服务
+# 启动API网关和所有微服务
+sh docker-run.sh
 ```
 
 ### 注意事项
