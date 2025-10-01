@@ -39,9 +39,10 @@ func Init() {
 	dal.Init()
 	tracer.InitJaeger(constants.ChatServiceName)
 
-	EsInit()
+	// EsInit()
 	klog.SetLevel(klog.LevelDebug)
-	klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(EsHookLog())))
+	// klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(EsHookLog())))
+	klog.SetLogger(kitexlogrus.NewLogger())
 }
 
 func EsHookLog() *eslogrus.ElasticHook {

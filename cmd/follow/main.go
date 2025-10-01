@@ -41,9 +41,10 @@ func Init() {
 	rpc.Init()
 	tracer.InitJaeger(constants.FollowServiceName)
 
-	EsInit()
+	// EsInit()
 	klog.SetLevel(klog.LevelDebug)
-	klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(EsHookLog())))
+	// klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(EsHookLog())))
+	klog.SetLogger(kitexlogrus.NewLogger())
 }
 
 func EsHookLog() *eslogrus.ElasticHook {
