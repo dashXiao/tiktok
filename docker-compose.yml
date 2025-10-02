@@ -29,13 +29,11 @@ services:
         container_name: redis
         image: "redis:latest"
         restart: always
+        command: redis-server --save 60 1 --loglevel warning --stop-writes-on-bgsave-error no --requirepass tiktok
         ports:
             - 6379:6379
         volumes:
             - ./data/redis:/data
-        environment:
-            - REDIS_PASSWORD=tiktok
-            - ALLOW_EMPTY_PASSWORD=no
         networks:
                 - tiktok
 
