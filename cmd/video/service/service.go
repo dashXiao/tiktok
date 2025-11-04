@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/config"
 )
 
@@ -21,11 +20,11 @@ func NewVideoService(ctx context.Context) *VideoService {
 	}
 	client, err := oss.New(config.OSS.Endpoint, config.OSS.AccessKeyID, config.OSS.AccessKeySecret, oss.UseCname(true))
 	if err != nil {
-		klog.Fatal(err)
+		panic(err)
 	}
 	bucket, err := client.Bucket(config.OSS.BucketName)
 	if err != nil {
-		klog.Fatal(err)
+		panic(err)
 	}
 	return &VideoService{ctx: ctx, bucket: bucket}
 }

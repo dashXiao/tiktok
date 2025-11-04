@@ -2,11 +2,8 @@ package config
 
 import (
 	"errors"
-	"log"
 	"os"
 
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 
 	_ "github.com/spf13/viper/remote"
@@ -44,32 +41,17 @@ func Init(path string, service string) {
 		panic(err)
 	}
 
-	klog.Infof("config path: %v\n", path)
-
 	if err := runtime_viper.ReadRemoteConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			klog.Fatal("could not find config files")
-		} else {
-			klog.Fatal("read config error: %v", err)
-		}
-		klog.Fatal(err)
+		panic(err)
 	}
 
 	configMapping(service)
-
-	klog.Infof("all keys: %v\n", runtime_viper.AllKeys())
-
-	// 持续监听配置
-	runtime_viper.OnConfigChange(func(e fsnotify.Event) {
-		klog.Infof("config file changed: %v\n", e.String())
-	})
-	runtime_viper.WatchConfig()
 }
 
 func configMapping(srv string) {
 	c := new(config)
 	if err := runtime_viper.Unmarshal(&c); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	Snowflake = &c.Snowflake
 

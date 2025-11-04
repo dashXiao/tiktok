@@ -4,8 +4,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
-
 	"github.com/ozline/tiktok/pkg/constants"
 
 	"github.com/ozline/tiktok/cmd/interaction/dal/cache"
@@ -31,7 +29,6 @@ func (s *InteractionService) CountComments(req *interaction.CommentCountRequest,
 			return 0, err
 		}
 		if !ok && times < constants.MaxRetryTimes {
-			klog.Infof("count %v times", times+1)
 			time.Sleep(constants.LockWaitTime)
 			return s.CountComments(req, times+1)
 		}

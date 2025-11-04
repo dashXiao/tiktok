@@ -6,18 +6,17 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/video/dal/db"
 )
 
 func AddVideoList(ctx context.Context, videoList []db.Video, latestTime int64) {
 	videoJson, err := json.Marshal(videoList)
 	if err != nil {
-		klog.Error(err)
+		return
 	}
 	err = RedisClient.Set(ctx, strconv.FormatInt(latestTime, 10), videoJson, time.Minute*10).Err()
 	if err != nil {
-		klog.Error(err)
+		return
 	}
 }
 func GetVideoList(ctx context.Context, latestTime int64) (videoList []db.Video, err error) {

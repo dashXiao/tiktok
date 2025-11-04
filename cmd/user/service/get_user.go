@@ -46,8 +46,6 @@ func (s *UserService) GetUser(req *user.InfoRequest) (*user.User, error) {
 
 	userResp.IsFollow, err = rpc.IsFollow(s.ctx, &follow.IsFollowRequest{UserId: claims.UserId, Token: req.Token, ToUserId: userModel.Id})
 
-	// klog.Infof("current userid: %v, to userid: %v, isfollow: %v\n", claims.UserId, userModel.Id, userResp.IsFollow)
-
 	if err != nil {
 		return nil, err
 	}

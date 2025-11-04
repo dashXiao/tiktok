@@ -2,15 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"net"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
-	"github.com/elastic/go-elasticsearch"
-	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
 	"github.com/ozline/tiktok/cmd/user/dal"
@@ -18,17 +14,13 @@ import (
 	"github.com/ozline/tiktok/config"
 	user "github.com/ozline/tiktok/kitex_gen/user/userservice"
 	"github.com/ozline/tiktok/pkg/constants"
-	"github.com/ozline/tiktok/pkg/eslogrus"
 	"github.com/ozline/tiktok/pkg/tracer"
 	"github.com/ozline/tiktok/pkg/utils"
-	"github.com/sirupsen/logrus"
 )
 
 var (
 	path       *string
 	listenAddr string // listen port
-
-	EsClient *elasticsearch.Client
 )
 
 func Init() {
@@ -42,32 +34,6 @@ func Init() {
 	tracer.InitJaeger(constants.UserServiceName)
 
 	rpc.Init()
-
-	// EsInit()
-	klog.SetLevel(klog.LevelDebug)
-	// klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(EsHookLog())))
-	klog.SetLogger(kitexlogrus.NewLogger())
-}
-
-func EsHookLog() *eslogrus.ElasticHook {
-	hook, err := eslogrus.NewElasticHook(EsClient, config.Elasticsearch.Host, logrus.DebugLevel, constants.UserServiceName)
-	if err != nil {
-		panic(err)
-	}
-
-	return hook
-}
-
-func EsInit() {
-	esConn := fmt.Sprintf("http://%s", config.Elasticsearch.Addr)
-	cfg := elasticsearch.Config{
-		Addresses: []string{esConn},
-	}
-	client, err := elasticsearch.NewClient(cfg)
-	if err != nil {
-		panic(err)
-	}
-	EsClient = client
 }
 
 func main() {
@@ -87,7 +53,7 @@ func main() {
 		}
 
 		if index == len(config.Service.AddrList)-1 {
-			klog.Fatal("not available port from config")
+			panic("not available port from config")
 		}
 	}
 

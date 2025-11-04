@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	pack "github.com/ozline/tiktok/cmd/chat/pack"
 	service "github.com/ozline/tiktok/cmd/chat/service"
 	chat "github.com/ozline/tiktok/kitex_gen/chat"
@@ -20,14 +19,12 @@ func (s *MessageServiceImpl) MessagePost(ctx context.Context, req *chat.MessageP
 	resp = new(chat.MessagePostReponse)
 	claim, err := utils.CheckToken(req.Token)
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(errno.AuthorizationFailedError)
 		return resp, err
 	}
 
 	err = service.NewChatService(ctx).SendMessage(req, claim.UserId, time.Now().Format(time.RFC3339))
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 		return resp, err
 	}
@@ -40,7 +37,6 @@ func (s *MessageServiceImpl) MessageList(ctx context.Context, req *chat.MessageL
 	resp = new(chat.MessageListResponse)
 	claim, err := utils.CheckToken(req.Token)
 	if err != nil || claim == nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(errno.AuthorizationFailedError)
 		return resp, err
 	}
@@ -50,7 +46,6 @@ func (s *MessageServiceImpl) MessageList(ctx context.Context, req *chat.MessageL
 	// redis中存在则返回，不存在查询mysql,
 	messageList, err := service.NewChatService(ctx).GetMessages(req, claim.UserId)
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 		resp.MessageList = pack.BuildMessage(nil)
 		resp.Total = 0

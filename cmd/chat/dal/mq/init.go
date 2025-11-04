@@ -4,7 +4,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/pkg/utils"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"gorm.io/gorm"
@@ -44,7 +43,6 @@ func InitRabbitMQ() {
 	}
 	dial, err := amqp.Dial(Rmq.mqurl)
 	if err != nil {
-		klog.Error(err)
 		return
 	}
 	Rmq.conn = dial

@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/interaction/dal/cache"
 	"github.com/ozline/tiktok/cmd/interaction/dal/db"
 	"github.com/ozline/tiktok/cmd/interaction/pack"
@@ -47,7 +46,6 @@ func (s *InteractionService) GetComments(req *interaction.CommentListRequest, ti
 			return nil, err
 		}
 		if !ok && times < constants.MaxRetryTimes {
-			klog.Infof("get %v times", times+1)
 			time.Sleep(constants.LockWaitTime)
 			return s.GetComments(req, times+1)
 		}
@@ -63,7 +61,6 @@ func (s *InteractionService) GetComments(req *interaction.CommentListRequest, ti
 				return nil, err
 			}
 		} else {
-			klog.Infof("no comments for video %d", req.VideoId)
 			err = cache.AddNoData(s.ctx, key)
 			if err != nil {
 				return nil, err
@@ -88,7 +85,6 @@ func (s *InteractionService) GetComments(req *interaction.CommentListRequest, ti
 		eg.Go(func() error {
 			defer func() {
 				if e := recover(); e != nil {
-					klog.Error(e)
 				}
 			}()
 			userInfo, err := rpc.UserInfo(ctx, &user.InfoRequest{

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/bytedance/sonic"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/chat/dal/cache"
 	"github.com/ozline/tiktok/cmd/chat/dal/db"
 
@@ -30,7 +29,6 @@ func NewChatMQ(queueName string) *ChatMQ {
 
 	ch, err := ChatMQCli.conn.Channel()
 	if err != nil {
-		klog.Error(err)
 		return nil
 	}
 	ChatMQCli.channel = ch
@@ -83,7 +81,6 @@ func (r *ChatMQ) Consumer() {
 	_, err := r.channel.QueueDeclare(r.queueName, false, false, false, false, nil)
 
 	if err != nil {
-		klog.Error(err)
 		return
 	}
 	msg, err := r.channel.Consume(
@@ -101,10 +98,8 @@ func (r *ChatMQ) Consumer() {
 		nil,
 	)
 	if err != nil {
-		klog.Error(err)
 		return
 	}
-	klog.Info("[*] Waiting for messages,To exit press CTRL+C")
 	go r.DealWithMessageToUser(msg)
 	forever := make(chan bool)
 	<-forever
@@ -114,19 +109,16 @@ func (c *ChatMQ) DealWithMessageToUser(msg <-chan amqp.Delivery) {
 		middle_message := new(MiddleMessage)
 		err := sonic.Unmarshal(req.Body, middle_message)
 		if err != nil {
-			klog.Error(err)
 			continue
 		}
 		message := new(cache.Message)
 		err = convertForMysql(message, middle_message)
 		if err != nil {
-			klog.Error(err)
 			continue
 		}
 		Mu.Lock()
 		err = db.DB.Create(&message).Error
 		if err != nil {
-			klog.Error(err)
 			Mu.Unlock()
 			continue
 		}
@@ -136,13 +128,11 @@ func (c *ChatMQ) DealWithMessageToUser(msg <-chan amqp.Delivery) {
 		middle_message.IsReadNum = append(middle_message.IsReadNum, middle_message.FromUserId)
 		msg, err := sonic.Marshal(middle_message)
 		if err != nil {
-			klog.Error(err)
 			Mu.Unlock()
 			continue
 		}
 		err = cache.MessageInsert(context.TODO(), key, revkey, message.CreatedAt.UnixMilli(), string(msg))
 		if err != nil {
-			klog.Error(err)
 			Mu.Unlock()
 			continue
 		}

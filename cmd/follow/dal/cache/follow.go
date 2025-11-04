@@ -5,7 +5,6 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/pkg/errno"
 	"github.com/redis/go-redis/v9"
 )
@@ -15,7 +14,6 @@ func IsFollow(ctx context.Context, uid, tid int64) (bool, error) {
 	exist, err := RedisClient.SIsMember(ctx, FollowListKey(uid), strconv.FormatInt(tid, 10)).Result()
 
 	if err != nil {
-		klog.Infof("err: %v", err)
 		return exist, err
 	}
 
@@ -33,13 +31,11 @@ func FollowAction(ctx context.Context, uid, tid int64) error {
 	// 不存在，进行关注操作
 	err = RedisClient.SAdd(ctx, FollowListKey(uid), strconv.FormatInt(tid, 10)).Err() // 自己的关注列表
 	if err != nil {
-		klog.Infof("err: %v", err)
 		return err
 	}
 
 	err = RedisClient.SAdd(ctx, FollowerListKey(tid), strconv.FormatInt(uid, 10)).Err() // 对方的粉丝列表
 	if err != nil {
-		klog.Infof("err: %v", err)
 		return err
 	}
 	return nil
@@ -56,14 +52,12 @@ func UnFollowAction(ctx context.Context, uid, tid int64) error {
 	// 从对方的粉丝列表移除
 	err = RedisClient.SRem(ctx, FollowerListKey(tid), strconv.FormatInt(uid, 10)).Err()
 	if err != nil {
-		klog.Infof("err: %v", err)
 		return err
 	}
 
 	// 从自己的关注列表移除
 	err = RedisClient.SRem(ctx, FollowListKey(uid), strconv.FormatInt(tid, 10)).Err()
 	if err != nil {
-		klog.Infof("err: %v", err)
 		return err
 	}
 	return nil
@@ -77,9 +71,7 @@ func FollowListAction(ctx context.Context, uid int64) (*[]int64, error) {
 	// 查询redis
 	idList, err := RedisClient.SMembers(ctx, key).Result()
 	if errors.Is(err, redis.Nil) {
-		klog.Info("Not found followList")
 	} else if err != nil {
-		klog.Infof("err: %v", err)
 		return nil, err
 	}
 
@@ -97,7 +89,6 @@ func UpdateFollowList(ctx context.Context, uid int64, followList *[]int64) error
 		idList[i] = v
 	}
 	if err := RedisClient.SAdd(ctx, key, idList).Err(); err != nil {
-		klog.Infof("err: %v", err)
 		return err
 	}
 	return nil
@@ -111,9 +102,7 @@ func FollowerListAction(ctx context.Context, uid int64) (*[]int64, error) {
 	// 查询redis
 	idList, err := RedisClient.SMembers(ctx, key).Result()
 	if err == redis.Nil {
-		klog.Info("Not found followerList")
 	} else if err != nil {
-		klog.Infof("err: %v", err)
 		return nil, err
 	}
 
@@ -131,7 +120,6 @@ func UpdateFollowerList(ctx context.Context, uid int64, followerList *[]int64) e
 		idList[i] = v
 	}
 	if err := RedisClient.SAdd(ctx, key, idList).Err(); err != nil {
-		klog.Infof("err: %v", err)
 		return err
 	}
 	return nil
@@ -142,7 +130,6 @@ func FriendListAction(ctx context.Context, uid int64) (*[]int64, error) {
 	// 先获取本人的关注列表
 	tempList, err := FollowListAction(ctx, uid)
 	if err != nil {
-		klog.Infof("err: %v", err)
 		return nil, err
 	}
 
@@ -150,7 +137,6 @@ func FriendListAction(ctx context.Context, uid int64) (*[]int64, error) {
 	for _, followID := range *tempList {
 		b, err := RedisClient.SIsMember(ctx, FollowerListKey(uid), followID).Result()
 		if err != nil {
-			klog.Infof("err: %v", err)
 			return nil, err
 		} else if !b { // 粉丝列表不存在，说明只是单方面关注，不是好友
 			continue

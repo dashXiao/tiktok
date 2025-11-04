@@ -4,7 +4,6 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/follow/dal/cache"
 	"github.com/ozline/tiktok/cmd/follow/dal/db"
 	"github.com/ozline/tiktok/cmd/follow/pack"
@@ -53,10 +52,10 @@ func (s *FollowService) FriendList(req *follow.FriendListRequest) (*[]*follow.Fr
 		wg.Add(1)
 		go func(id int64, req *follow.FriendListRequest, userList *[]*follow.FriendUser, wg *sync.WaitGroup, mu *sync.Mutex) {
 			defer func() {
-				// 协程内部使用recover捕获可能在调用逻辑中发生的panic
 				if e := recover(); e != nil {
-					// 某个服务调用协程报错，在这里打印一些错误日志
-					klog.Info("recover panic:", e)
+					mu.Lock()
+					isErr = true
+					mu.Unlock()
 				}
 				wg.Done()
 			}()

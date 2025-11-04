@@ -3,7 +3,6 @@ package service
 import (
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/follow/dal/cache"
 	"github.com/ozline/tiktok/cmd/follow/dal/db"
 	"github.com/ozline/tiktok/cmd/follow/rpc"
@@ -39,7 +38,6 @@ func (s *FollowService) Action(req *follow.ActionRequest) error {
 	})
 
 	if err != nil {
-		klog.Info(err)
 		return errno.UserNotFoundError
 	}
 

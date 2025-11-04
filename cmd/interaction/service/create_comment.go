@@ -3,7 +3,6 @@ package service
 import (
 	"strconv"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/interaction/dal/cache"
 	"github.com/ozline/tiktok/cmd/interaction/dal/db"
 	"github.com/ozline/tiktok/cmd/interaction/pack"
@@ -27,7 +26,6 @@ func (s *InteractionService) CreateComment(req *interaction.CommentActionRequest
 	eg.Go(func() error {
 		defer func() {
 			if e := recover(); e != nil {
-				klog.Error(e)
 			}
 		}()
 		var err error
@@ -39,7 +37,6 @@ func (s *InteractionService) CreateComment(req *interaction.CommentActionRequest
 	eg.Go(func() error {
 		defer func() {
 			if e := recover(); e != nil {
-				klog.Error(e)
 			}
 		}()
 		err := cache.Unlink(ctx, key)
@@ -48,7 +45,6 @@ func (s *InteractionService) CreateComment(req *interaction.CommentActionRequest
 	eg.Go(func() error {
 		defer func() {
 			if e := recover(); e != nil {
-				klog.Error(e)
 			}
 		}()
 		ok, _, err := cache.GetCount(ctx, key)
@@ -66,7 +62,6 @@ func (s *InteractionService) CreateComment(req *interaction.CommentActionRequest
 	eg.Go(func() error {
 		defer func() {
 			if e := recover(); e != nil {
-				klog.Error(e)
 			}
 		}()
 		var err error

@@ -12,14 +12,10 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	hertzUtils "github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/hertz-contrib/gzip"
 	hertzSentinel "github.com/hertz-contrib/opensergo/sentinel/adapter"
-	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	// "github.com/ozline/tiktok/cmd/api/biz/middleware/es"
 	"github.com/ozline/tiktok/cmd/api/biz/rpc"
 	"github.com/ozline/tiktok/config"
 	"github.com/ozline/tiktok/pkg/constants"
@@ -44,12 +40,6 @@ func Init() {
 
 	initSentinel()
 
-	// es.Init()
-
-	// set log
-	klog.SetLevel(klog.LevelDebug)
-	// klog.SetLogger(kitexlogrus.NewLogger(kitexlogrus.WithHook(es.EsHookLog())))
-	klog.SetLogger(kitexlogrus.NewLogger())
 }
 
 func main() {
@@ -63,7 +53,7 @@ func main() {
 		}
 
 		if index == len(config.Service.AddrList)-1 {
-			klog.Fatal("not available port from config")
+			panic("not available port from config")
 		}
 	}
 
@@ -85,7 +75,6 @@ func main() {
 			return "api"
 		}),
 		hertzSentinel.WithServerBlockFallback(func(ctx context.Context, c *app.RequestContext) {
-			hlog.CtxInfof(ctx, "frequent requests have been rejected by the gateway. clientIP: %v\n", c.ClientIP())
 			c.AbortWithStatusJSON(400, hertzUtils.H{
 				"status_msg":  "too many request; the quota used up",
 				"status_code": -1,
@@ -100,7 +89,6 @@ func main() {
 
 func recoveryHandler(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
 
-	hlog.CtxInfof(ctx, "[Recovery] InternalServiceError err=%v\n stack=%s\n", err, stack)
 	c.JSON(consts.StatusInternalServerError, map[string]interface{}{
 		"code":    errno.ServiceErrorCode,
 		"message": fmt.Sprintf("[Recovery] err=%v\nstack=%s", err, stack),
@@ -110,7 +98,7 @@ func recoveryHandler(ctx context.Context, c *app.RequestContext, err interface{}
 func initSentinel() {
 	err := sentinel.InitDefault()
 	if err != nil {
-		hlog.Fatalf("Unexpected error: %+v", err)
+		panic(err)
 	}
 	_, err = flow.LoadRules([]*flow.Rule{
 		{
@@ -122,7 +110,6 @@ func initSentinel() {
 		},
 	})
 	if err != nil {
-		hlog.Fatalf("Unexpected error: %+v", err)
-		return
+		panic(err)
 	}
 }

@@ -9,7 +9,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/config"
 	"github.com/ozline/tiktok/kitex_gen/video"
 )
@@ -32,7 +31,6 @@ func (s *VideoService) UploadCover(req *video.PutVideoRequest, coverName string)
 	err = mkfifo(pipePath)
 
 	if err != nil {
-		klog.Errorf("error creating named pipe: %v\n", err)
 		return err
 	}
 
@@ -48,7 +46,6 @@ func (s *VideoService) UploadCover(req *video.PutVideoRequest, coverName string)
 	go func() {
 		pipeWriter, err := os.OpenFile(pipePath, os.O_WRONLY, os.ModeNamedPipe)
 		if err != nil {
-			klog.Errorf("error opening pipe: %v", err)
 			return
 		}
 		defer pipeWriter.Close()
@@ -56,7 +53,6 @@ func (s *VideoService) UploadCover(req *video.PutVideoRequest, coverName string)
 		_, err = pipeWriter.Write(req.VideoFile)
 
 		if err != nil {
-			klog.Errorf("error writing to pipe: %v", err)
 			return
 		}
 	}()
@@ -64,17 +60,12 @@ func (s *VideoService) UploadCover(req *video.PutVideoRequest, coverName string)
 	err = cmd.Run()
 
 	if err != nil {
-		klog.Errorf("error running FFmpeg: %v", err)
 		return err
 	}
 
 	// 创建ioReader对象, 上传文件
 	imageReader := bytes.NewReader(imageBuffer.Bytes())
 	err = s.bucket.PutObject(config.OSS.MainDirectory+"/"+coverName, imageReader)
-
-	if err != nil {
-		klog.Errorf("error uploading cover: %v", err)
-	}
 
 	return err
 }

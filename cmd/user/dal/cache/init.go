@@ -3,7 +3,6 @@ package cache
 import (
 	"context"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/config"
 	"github.com/redis/go-redis/v9"
 )
@@ -25,21 +24,17 @@ func Init() {
 		panic(err)
 	}
 
-	val, err := rdb.Get(ctx, "test").Result()
+	_, err = rdb.Get(ctx, "test").Result()
 
 	if err != nil {
 		panic(err)
 	}
 
-	klog.Infof("val: %v\n", val)
-
-	val, err = rdb.Get(ctx, "test1").Result()
+	_, err = rdb.Get(ctx, "test1").Result()
 
 	if err == redis.Nil {
-		klog.Info("Not found test1 key")
+		return
 	} else if err != nil {
 		panic(err)
 	}
-
-	klog.Infof("val: %v\n", val)
 }

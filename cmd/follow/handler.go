@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/follow/pack"
 	"github.com/ozline/tiktok/cmd/follow/service"
 	follow "github.com/ozline/tiktok/kitex_gen/follow"
@@ -24,7 +23,6 @@ func (s *FollowServiceImpl) Action(ctx context.Context, req *follow.ActionReques
 	}
 
 	if err := service.NewFollowService(ctx).Action(req); err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 		return resp, nil
 	}
@@ -45,7 +43,6 @@ func (s *FollowServiceImpl) FollowList(ctx context.Context, req *follow.FollowLi
 	followResp, err := service.NewFollowService(ctx).FollowList(req)
 
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 	}
 
@@ -66,7 +63,6 @@ func (s *FollowServiceImpl) FollowerList(ctx context.Context, req *follow.Follow
 	followerResp, err := service.NewFollowService(ctx).FollowerList(req)
 
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 	}
 
@@ -87,7 +83,6 @@ func (s *FollowServiceImpl) FriendList(ctx context.Context, req *follow.FriendLi
 	friendResp, err := service.NewFollowService(ctx).FriendList(req)
 
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 	}
 
@@ -108,7 +103,6 @@ func (s *FollowServiceImpl) FollowCount(ctx context.Context, req *follow.FollowC
 	followResp, err := service.NewFollowService(ctx).FollowCount(req)
 
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 	}
 
@@ -129,7 +123,6 @@ func (s *FollowServiceImpl) FollowerCount(ctx context.Context, req *follow.Follo
 	followResp, err := service.NewFollowService(ctx).FollowerCount(req)
 
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 	}
 
@@ -150,7 +143,6 @@ func (s *FollowServiceImpl) IsFollow(ctx context.Context, req *follow.IsFollowRe
 	followResp, err := service.NewFollowService(ctx).IsFollow(req)
 
 	if err != nil {
-		klog.Error(err)
 		resp.Base = pack.BuildBaseResp(err)
 	}
 

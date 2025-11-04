@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/follow/dal/cache"
 	"github.com/ozline/tiktok/cmd/follow/dal/db"
 	"github.com/ozline/tiktok/kitex_gen/follow"
@@ -28,7 +27,6 @@ func (s *FollowService) IsFollow(req *follow.IsFollowRequest) (bool, error) {
 			return false, nil
 		}
 
-		klog.Errorf("db sql meet error: %v\n", err)
 		return false, err
 	}
 

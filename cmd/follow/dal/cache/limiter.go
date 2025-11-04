@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -22,7 +21,6 @@ func Limit(ctx context.Context, rate int, interval time.Duration) error {
 	}
 	// 如果令牌数大于等于最大请求数拒绝该请求
 	if size >= int64(rate) {
-		klog.Info("limit!")
 		return errors.New("too many request")
 	}
 	// 否则添加一个新的时间戳成为成员

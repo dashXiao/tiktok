@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/pkg/utils"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -58,6 +57,4 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-
-	klog.Infof("Sent to rabbitmq: %s\n", body)
 }

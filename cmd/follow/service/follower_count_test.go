@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/follow/dal"
 	"github.com/ozline/tiktok/cmd/follow/service"
 	"github.com/ozline/tiktok/config"
@@ -29,7 +28,6 @@ func TestFollowerCount(t *testing.T) {
 		})
 
 		if err != nil {
-			klog.Infof("test num %v,err:%v", i, err)
 			continue
 		}
 	}

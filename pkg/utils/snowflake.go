@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"sync"
 	"time"
-
-	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 const (
@@ -67,7 +65,6 @@ func (s *Snowflake) NextVal() int64 {
 	t := now - epoch
 	if t > timestampMax {
 		s.Unlock()
-		klog.Errorf("epoch must be between 0 and %d", timestampMax-1)
 		return 0
 	}
 	s.timestamp = now

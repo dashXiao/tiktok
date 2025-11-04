@@ -7,8 +7,6 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/cloudwego/kitex/pkg/klog"
-
 	"github.com/ozline/tiktok/cmd/interaction/dal/sensitive_words"
 )
 
@@ -40,7 +38,6 @@ func (s *InteractionService) MatchSensitiveWords(text string) (bool, error) {
 		return false, err
 	}
 	if res.Code != 0 {
-		klog.Warnf("sensitive-words api error : %v", res.Msg)
 		return false, nil
 	}
 	return !res.IsPass, nil

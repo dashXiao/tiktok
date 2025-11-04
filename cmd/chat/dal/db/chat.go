@@ -5,7 +5,6 @@ import (
 	"errors"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/kitex_gen/chat"
 	"gorm.io/gorm"
 	"gorm.io/hints"
@@ -46,7 +45,6 @@ func GetMessageList(ctx context.Context, to_user_id int64, from_user_id int64) (
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errors.New("user not found")
 		}
-		klog.Errorf("get message_list error: %v\n", err)
 		return nil, err
 	}
 	// 回写redis --先返回信息，然后送到mq进行异步处理

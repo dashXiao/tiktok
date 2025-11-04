@@ -1,9 +1,9 @@
 package service
 
 import (
+	"fmt"
 	"sync"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/ozline/tiktok/cmd/interaction/rpc"
 	"github.com/ozline/tiktok/kitex_gen/interaction"
 	"github.com/ozline/tiktok/kitex_gen/video"
@@ -27,7 +27,7 @@ func (s *InteractionService) GetUserTotalFavorited(req *interaction.UserTotalFav
 			// recover panic
 			defer func() {
 				if e := recover(); e != nil {
-					klog.Errorf("recover panic :", e)
+					errChan <- fmt.Errorf("panic: %v", e)
 				}
 				wg.Done()
 			}()
