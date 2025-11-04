@@ -34,7 +34,5 @@ Meanwhile, there are the list should in `config` folder:
 
 1. `sql` folder
    1. `init.sql`: init table sql
-   2. `user.sql`: for mysql-exporter to extract data
 2. `config.yaml`
-3. `prometheus.yaml`: prometheus config
-4. `words.txt`: senstive words list
+3. `words.txt`: senstive words list

@@ -4,7 +4,7 @@
 
 English | [简体中文](./docs/zh-cn.md)
 
-**tiktok** is a distributed **simple-tiktok** backend based on RPC and HTTP protocols using Kitex + Hertz + etcd + MySQL + Jaeger + Docker + Thrift + Prometheus + Grafana + Elasticsearch + Kibana
+**tiktok** is a distributed **simple-tiktok** backend based on RPC and HTTP protocols using Kitex + Hertz + etcd + MySQL + Jaeger + Docker + Thrift + Elasticsearch + Kibana
 
 # Materials (Simplified Chinese only)
 
@@ -55,10 +55,8 @@ deploy
 ├── config              # same as this projects
 │   ├── config.yaml
 │   ├── words.txt       # sensitive word list
-│   ├── prometheus.yml
 │   └── sql             # for mysql init
-│       ├── init.sql
-│       └── user.sql
+│       └── init.sql
 ├── docker-compose.yml  # for environment, same
 └── restart-service.sh  # deploy scripts
 ```
@@ -150,10 +148,6 @@ you can drop `.postman/tiktok.openapi.json` to **postman** then start this proje
 
 ## Kibana + Elasticsearch
 ![kibana](docs/img/kibana.png)
-
-## Grafana + Prometheus
-![grafana](docs/img/grafana.png)
-
 
 # Contributor
 

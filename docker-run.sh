@@ -4,8 +4,6 @@
 mkdir -p data/kibana
 mkdir -p data/elasticsearch
 mkdir -p data/jaeger
-mkdir -p data/prometheus
-mkdir -p data/grafana
 
 mkdir -p data/mysql
 mkdir -p data/redis
@@ -13,7 +11,6 @@ mkdir -p data/rabbitmq
 mkdir -p data/etcd
 
 mkdir -p config/elasticsearch
-mkdir -p config/prometheus
 mkdir -p config/mysql
 mkdir -p config/redis
 mkdir -p config/rabbitmq

@@ -4,7 +4,7 @@
 
 [English](../README.md) | 简体中文
 
-tiktok 是一个基于HTTP和RPC协议, 分布式架构的简单抖音后端. 它使用到了 Kitex、Hertz、etcd、MySQL、Jaeger、Docker、Thrift、Prometheus、Grafana、Elasticsearch和Kibana
+tiktok 是一个基于HTTP和RPC协议, 分布式架构的简单抖音后端. 它使用到了 Kitex、Hertz、etcd、MySQL、Jaeger、Docker、Thrift、Elasticsearch和Kibana
 
 # 材料
 
@@ -52,11 +52,9 @@ sh docker-run.sh api # 或者其他服务
 deploy
 ├── config
 │   ├── config.yaml     # 基础配置
-│   ├── prometheus.yml  # prometheus配置
 │   ├── words.txt       # 敏感词文件
 │   └── sql             # mysql初始化
-│       ├── init.sql
-│       └── user.sql
+│       └── init.sql
 ├── docker-compose.yml  # 环境搭建
 └── restart-service.sh  # 部署脚本
 ```
@@ -148,10 +146,6 @@ deploy
 
 ## Kibana + Elasticsearch
 ![kibana](./img/kibana.png)
-
-## Grafana + Prometheus
-![grafana](./img/grafana.png)
-
 
 # 贡献者
 
