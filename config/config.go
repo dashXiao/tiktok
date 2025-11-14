@@ -14,7 +14,6 @@ var (
 	Mysql         *mySQL
 	Snowflake     *snowflake
 	Service       *service
-	Jaeger        *jaeger
 	Etcd          *etcd
 	RabbitMQ      *rabbitMQ
 	Redis         *redis
@@ -35,6 +34,7 @@ func Init(path string, service string) {
 	Etcd = &etcd{Addr: etcdAddr}
 
 	// use etcd for config save
+	// 相当于套用一下，没有用到核心功能
 	err := runtime_viper.AddRemoteProvider("etcd3", Etcd.Addr, "/config/config.yaml")
 
 	if err != nil {
@@ -58,7 +58,6 @@ func configMapping(srv string) {
 	Server = &c.Server
 	Server.Secret = []byte(runtime_viper.GetString("server.jwt-secret"))
 
-	Jaeger = &c.Jaeger
 	Mysql = &c.MySQL
 	RabbitMQ = &c.RabbitMQ
 	Redis = &c.Redis
@@ -88,10 +87,6 @@ func InitForTest() {
 		Version: "1.0",
 		Name:    "tiktok",
 		Secret:  []byte("MTAxNTkwMTg1Mw=="),
-	}
-
-	Jaeger = &jaeger{
-		Addr: "127.0.0.1:6831",
 	}
 
 	Etcd = &etcd{

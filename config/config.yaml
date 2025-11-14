@@ -46,9 +46,6 @@ redis:
   addr: redis:6379
   password: tiktok
 
-jaeger:
-  addr: jaeger:6831
-
 # if you deploy in different machines, remember to modify IP.
 services:
   api:

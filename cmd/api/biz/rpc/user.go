@@ -13,8 +13,6 @@ import (
 	"github.com/ozline/tiktok/pkg/constants"
 	"github.com/ozline/tiktok/pkg/errno"
 	"github.com/ozline/tiktok/pkg/middleware"
-
-	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
 func InitUserRPC() {
@@ -32,7 +30,6 @@ func InitUserRPC() {
 		client.WithConnectTimeout(constants.ConnectTimeout),
 		client.WithFailureRetry(retry.NewFailurePolicy()),
 		client.WithResolver(r),
-		client.WithSuite(trace.NewDefaultClientSuite()),
 		client.WithLoadBalancer(loadbalance.NewWeightedRoundRobinBalancer()),
 	)
 

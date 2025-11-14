@@ -4,7 +4,7 @@
 
 English | [简体中文](./docs/zh-cn.md)
 
-**tiktok** is a distributed **simple-tiktok** backend based on RPC and HTTP protocols using Kitex + Hertz + etcd + MySQL + Jaeger + Docker + Thrift + Elasticsearch + Kibana
+**tiktok** is a distributed **simple-tiktok** backend based on RPC and HTTP protocols using Kitex + Hertz + etcd + MySQL + Docker + Thrift + Elasticsearch + Kibana
 
 # Materials (Simplified Chinese only)
 
@@ -89,7 +89,6 @@ If you want a specific tutorial on how to use it, please visit: [deploy docs](./
 │   ├── constants         # store any consts
 │   ├── errno             # custom error
 │   ├── middleware        # common middleware
-│   ├── tracer            # for jaeger
 │   └── utils             # useful funcs
 └── test
 ```
@@ -140,11 +139,6 @@ If you want a specific tutorial on how to use it, please visit: [deploy docs](./
 you can drop `.postman/tiktok.openapi.json` to **postman** then start this project and test
 
 # Visualization example
-
-## Jaeger
-
-![jaeger](docs/img/jaeger.png)
-![jaeger-dag](docs/img/jaeger-dag.png)
 
 ## Kibana + Elasticsearch
 ![kibana](docs/img/kibana.png)

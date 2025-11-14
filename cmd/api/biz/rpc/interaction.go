@@ -7,7 +7,6 @@ import (
 	"github.com/cloudwego/kitex/pkg/loadbalance"
 	"github.com/cloudwego/kitex/pkg/retry"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	trace "github.com/kitex-contrib/tracer-opentracing"
 	"github.com/ozline/tiktok/config"
 	"github.com/ozline/tiktok/kitex_gen/interaction"
 	"github.com/ozline/tiktok/kitex_gen/interaction/interactionservice"
@@ -31,7 +30,6 @@ func InitInteractionRPC() {
 		client.WithConnectTimeout(constants.ConnectTimeout),
 		client.WithFailureRetry(retry.NewFailurePolicy()),
 		client.WithResolver(r),
-		client.WithSuite(trace.NewDefaultClientSuite()),
 		client.WithLoadBalancer(loadbalance.NewWeightedRoundRobinBalancer()),
 	)
 

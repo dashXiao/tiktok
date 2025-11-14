@@ -12,8 +12,6 @@ import (
 	"github.com/ozline/tiktok/pkg/constants"
 	"github.com/ozline/tiktok/pkg/errno"
 	"github.com/ozline/tiktok/pkg/middleware"
-
-	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
 func InitVideoRPC() {
@@ -31,7 +29,6 @@ func InitVideoRPC() {
 		client.WithConnectTimeout(constants.ConnectTimeout),
 		client.WithFailureRetry(retry.NewFailurePolicy()),
 		client.WithResolver(resolver),
-		client.WithSuite(trace.NewDefaultClientSuite()),
 	)
 
 	if err != nil {

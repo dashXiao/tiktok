@@ -25,10 +25,6 @@ type mySQL struct {
 	Charset  string
 }
 
-type jaeger struct {
-	Addr string
-}
-
 type etcd struct {
 	Addr string
 }
@@ -61,7 +57,6 @@ type config struct {
 	Server        server
 	Snowflake     snowflake
 	MySQL         mySQL
-	Jaeger        jaeger
 	Etcd          etcd
 	RabbitMQ      rabbitMQ
 	Redis         redis

@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	gormopentracing "gorm.io/plugin/opentracing"
 )
 
 type DBAction struct {
@@ -34,10 +33,6 @@ func Init() {
 	// TODO: 加入一些其他特性
 
 	if err != nil {
-		panic(err)
-	}
-
-	if err = DB.Use(gormopentracing.New()); err != nil {
 		panic(err)
 	}
 

@@ -6,7 +6,6 @@ import (
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	trace "github.com/kitex-contrib/tracer-opentracing"
 	"github.com/ozline/tiktok/config"
 	"github.com/ozline/tiktok/kitex_gen/chat"
 	"github.com/ozline/tiktok/kitex_gen/chat/messageservice"
@@ -30,7 +29,6 @@ func InitChatRPC() {
 		client.WithConnectTimeout(constants.ConnectTimeout),
 		client.WithFailureRetry(retry.NewFailurePolicy()),
 		client.WithResolver(r),
-		client.WithSuite(trace.NewDefaultClientSuite()), // 设置链路追踪
 	)
 
 	if err != nil {

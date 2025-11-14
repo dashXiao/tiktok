@@ -8,13 +8,11 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	trace "github.com/kitex-contrib/tracer-opentracing"
 	"github.com/ozline/tiktok/cmd/video/dal"
 	"github.com/ozline/tiktok/cmd/video/rpc"
 	"github.com/ozline/tiktok/config"
 	video "github.com/ozline/tiktok/kitex_gen/video/videoservice"
 	"github.com/ozline/tiktok/pkg/constants"
-	"github.com/ozline/tiktok/pkg/tracer"
 	"github.com/ozline/tiktok/pkg/utils"
 )
 
@@ -29,7 +27,6 @@ func Init() {
 	flag.Parse()
 	config.Init(*path, constants.VideoServiceName)
 	dal.Init()
-	tracer.InitJaeger(constants.VideoServiceName)
 	rpc.Init()
 }
 
@@ -67,7 +64,6 @@ func main() {
 		server.WithMuxTransport(),
 		server.WithServiceAddr(addr),
 		server.WithRegistry(r),
-		server.WithSuite(trace.NewDefaultServerSuite()),
 		server.WithLimit(&limit.Option{
 			MaxConnections: constants.MaxConnections,
 			MaxQPS:         constants.MaxQPS,

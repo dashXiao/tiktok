@@ -135,16 +135,3 @@ services:
             - ./data/kibana:/usr/share/kibana/data
         networks:
             - tiktok
-
-    jaeger:
-        container_name: jaeger
-        image: "jaegertracing/all-in-one:latest"
-        restart: always
-        ports:
-            - 16686:16686
-            - 6831:6831/udp
-        volumes:
-            - ./data/jaeger:/var/lib/jaeger
-            - ./config/jaeger:/etc/jaeger
-        networks:
-            - tiktok

@@ -20,7 +20,6 @@ import (
 	"github.com/ozline/tiktok/config"
 	"github.com/ozline/tiktok/pkg/constants"
 	"github.com/ozline/tiktok/pkg/errno"
-	"github.com/ozline/tiktok/pkg/tracer"
 	"github.com/ozline/tiktok/pkg/utils"
 )
 
@@ -36,7 +35,6 @@ func Init() {
 	config.Init(*path, constants.APIServiceName)
 
 	rpc.Init()
-	tracer.InitJaeger(constants.APIServiceName)
 
 	initSentinel()
 
