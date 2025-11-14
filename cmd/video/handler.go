@@ -80,11 +80,6 @@ func (s *VideoServiceImpl) GetPublishList(ctx context.Context, req *video.GetPub
 		return resp, nil
 	}
 
-	if req.UserId < 10000 {
-		resp.Base = pack.BuildBaseResp(errno.ParamError)
-		return resp, nil
-	}
-
 	videoList, userList, favoriteCountList, commentCountList, isFavoriteList, err := service.NewVideoService(ctx).GetPublishVideoInfo(req)
 	if err != nil {
 		resp.Base = pack.BuildBaseResp(err)
@@ -99,15 +94,11 @@ func (s *VideoServiceImpl) GetPublishList(ctx context.Context, req *video.GetPub
 
 // GetWorkCount implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) GetWorkCount(ctx context.Context, req *video.GetWorkCountRequest) (resp *video.GetWorkCountResponse, err error) {
+	// Work??? 非常怪异的函数名。用Videos不好吗？
 	resp = new(video.GetWorkCountResponse)
 
 	if _, err := utils.CheckToken(req.Token); err != nil {
 		resp.Base = pack.BuildBaseResp(errno.AuthorizationFailedError)
-		return resp, nil
-	}
-
-	if req.UserId < 10000 {
-		resp.Base = pack.BuildBaseResp(errno.ParamError)
 		return resp, nil
 	}
 
@@ -131,11 +122,6 @@ func (s *VideoServiceImpl) GetVideoIDByUid(ctx context.Context, req *video.GetVi
 		return resp, nil
 	}
 
-	if req.UserId < 10000 {
-		resp.Base = pack.BuildBaseResp(errno.ParamError)
-		return resp, nil
-	}
-
 	videoIDList, err := service.NewVideoService(ctx).GetVideoIDByUid(req)
 	if err != nil {
 		resp.Base = pack.BuildBaseResp(err)
@@ -148,6 +134,7 @@ func (s *VideoServiceImpl) GetVideoIDByUid(ctx context.Context, req *video.GetVi
 
 // PutVideo implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) PutVideo(ctx context.Context, req *video.PutVideoRequest) (resp *video.PutVideoResponse, err error) {
+	// *** Put??? 谁教你这么命名的 ***
 	resp = new(video.PutVideoResponse)
 
 	claim, err := utils.CheckToken(req.Token)

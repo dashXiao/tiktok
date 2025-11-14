@@ -50,6 +50,7 @@ func (s *VideoService) FeedVideo(req *video.FeedRequest) ([]db.Video, []*user.Us
 	results := make([]result, len(videoList))
 
 	// 并发调用获取user信息、favoriteCount、commentCount和isFavorite
+	// ***当前设计存在缺陷：一个数据获取失败，会让整个feed返回空***
 	for i := 0; i < len(videoList); i++ {
 		index := i // 在闭包中使用本地副本以避免竞态条件
 		eg.Go(func() error {
@@ -61,6 +62,7 @@ func (s *VideoService) FeedVideo(req *video.FeedRequest) ([]db.Video, []*user.Us
 			if err != nil {
 				return err
 			}
+
 			// 获取favoriteCount
 			favoriteCount, err := rpc.GetVideoFavoriteCount(s.ctx, &interaction.VideoFavoritedCountRequest{
 				VideoId: videoList[index].Id,
@@ -69,6 +71,7 @@ func (s *VideoService) FeedVideo(req *video.FeedRequest) ([]db.Video, []*user.Us
 			if err != nil {
 				return err
 			}
+
 			// 获取commentCount
 			commentCount, err := rpc.GetCommentCount(s.ctx, &interaction.CommentCountRequest{
 				VideoId: videoList[index].Id,
@@ -77,6 +80,7 @@ func (s *VideoService) FeedVideo(req *video.FeedRequest) ([]db.Video, []*user.Us
 			if err != nil {
 				return err
 			}
+
 			// 获取isFavorite
 			isFavorite, err := rpc.GetVideoIsFavorite(s.ctx, &interaction.InteractionServiceIsFavoriteArgs{Req: &interaction.IsFavoriteRequest{
 				// UserId:  videoList[index].UserID,
@@ -87,6 +91,8 @@ func (s *VideoService) FeedVideo(req *video.FeedRequest) ([]db.Video, []*user.Us
 			if err != nil {
 				return err
 			}
+
+			// 结果写回到 []results
 			results[index] = result{
 				userInfo:      userInfo,
 				favoriteCount: favoriteCount,

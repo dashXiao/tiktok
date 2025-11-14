@@ -10,6 +10,7 @@ import (
 )
 
 func (s *VideoService) GetPublishVideoInfo(req *video.GetPublishListRequest) ([]db.Video, []*user.User, []int64, []int64, []bool, error) {
+	// ***获取视频的功能上存在大量耦合；返回列表意义不明确***
 	videoList, err := db.GetVideoInfoByUid(s.ctx, req.UserId)
 
 	// 创建错误组

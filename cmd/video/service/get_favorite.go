@@ -10,6 +10,7 @@ import (
 )
 
 func (s *VideoService) GetFavoriteVideoInfo(req *video.GetFavoriteVideoInfoRequest) ([]db.Video, []*user.User, []int64, []int64, error) {
+	// 和 FeedVideo 存在大量耦合 bad!!!
 	videoList, err := db.GetVideoInfoByID(s.ctx, req.VideoId)
 
 	// 创建错误组

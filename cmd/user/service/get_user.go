@@ -24,6 +24,7 @@ func (s *UserService) GetUser(req *user.InfoRequest) (*user.User, error) {
 	}
 
 	// 关注数量
+	// 调用链：here -> cmd/user/rpc/follow.go  followClient.FollowCount -> cmd/follow/handler.go FollowCount -> ...
 	userResp.FollowCount, err = rpc.GetFollowCount(s.ctx, &follow.FollowCountRequest{UserId: userModel.Id, Token: req.Token})
 
 	if err != nil {
@@ -38,7 +39,7 @@ func (s *UserService) GetUser(req *user.InfoRequest) (*user.User, error) {
 	}
 
 	// 是否关注
-	claims, err := utils.CheckToken(req.Token)
+	claims, err := utils.CheckToken(req.Token) // 通过解析Token获取当前登录的UserId
 
 	if err != nil {
 		return nil, err
@@ -50,7 +51,7 @@ func (s *UserService) GetUser(req *user.InfoRequest) (*user.User, error) {
 		return nil, err
 	}
 
-	// 产品数量
+	// 作品数量
 	userResp.WorkCount, err = rpc.GetWorkCount(s.ctx, &video.GetWorkCountRequest{UserId: userModel.Id, Token: req.Token})
 
 	if err != nil {

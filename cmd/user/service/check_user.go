@@ -7,8 +7,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// CheckUser check user is exist and it's password
+// CheckUser check if user exists and it's password
 func (s *UserService) CheckUser(req *user.LoginRequest) (*db.User, error) {
+	// 函数名叫Check，却返回User? 应该返回 Bool
 	userModel, err := db.GetUserByUsername(s.ctx, req.Username)
 
 	if err != nil {
