@@ -42,6 +42,8 @@ func (c *ChatService) GetMessages(req *chat.MessageListRequest, user_id int64) (
 		// 没有新消息
 		return nil, nil
 	}
+
+	// MySQL search
 	messages, err := db.GetMessageList(c.ctx, req.ToUserId, user_id)
 	if err != nil {
 		return nil, err
@@ -62,7 +64,7 @@ func (c *ChatService) GetMessages(req *chat.MessageListRequest, user_id int64) (
 		mes, _ := sonic.Marshal(val)
 		key := strconv.FormatInt(val.FromUserId, 10) + "-" + strconv.FormatInt(val.ToUserId, 10)
 		cre_time, _ := time.ParseInLocation(time.RFC3339, val.CreatedAt, time.Local)
-
+		// 写入Redis
 		err := cache.MessageInsert(c.ctx, key, revkey, cre_time.UnixMilli(), string(mes))
 		if err != nil {
 			continue
