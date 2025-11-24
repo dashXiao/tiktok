@@ -39,17 +39,44 @@ services:
         networks:
                 - tiktok
 
-    rabbitmq:
-        container_name: rabiitmq
-        image: "rabbitmq:latest"
+    zookeeper:
+        container_name: zookeeper
+        image: "confluentinc/cp-zookeeper:7.5.0"
+        restart: always
         ports:
-            - 5672:5672
-            - 15672:15672
+            - 2181:2181
         environment:
-            - RABBITMQ_DEFAULT_USER=tiktok
-            - RABBITMQ_DEFAULT_PASS=tiktok
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
         volumes:
-            - ./data/rabbitmq:/var/lib/rabbitmq
+            - ./data/zookeeper/data:/var/lib/zookeeper/data
+            - ./data/zookeeper/log:/var/lib/zookeeper/log
+        networks:
+            - tiktok
+
+    kafka:
+        container_name: kafka
+        image: "confluentinc/cp-kafka:7.5.0"
+        restart: always
+        depends_on:
+            - zookeeper
+        ports:
+            - 9092:9092
+            - 29092:29092
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+            KAFKA_LISTENERS: PLAINTEXT://:9092,EXTERNAL://:29092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+            KAFKA_HEAP_OPTS: "-Xmx1G -Xms256M"
+            ALLOW_PLAINTEXT_LISTENER: "yes"
+        volumes:
+            - ./data/kafka/data:/var/lib/kafka/data
         networks:
             - tiktok
 

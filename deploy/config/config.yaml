@@ -33,10 +33,12 @@ elasticsearch:
   addr: 127.0.0.1:9200
   host: 127.0.0.1
 
-rabbitmq:
-  addr: 127.0.0.1:5672
-  username: tiktok
-  password: tiktok
+kafka:
+  brokers:
+    - 127.0.0.1:9092
+  topic: chat-messages
+  group-id: chat-service
+  dead-letter-topic: chat-messages-dlq
 
 redis:
   addr: 127.0.0.1:6379

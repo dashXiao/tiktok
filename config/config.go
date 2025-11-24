@@ -15,7 +15,7 @@ var (
 	Snowflake     *snowflake
 	Service       *service
 	Etcd          *etcd
-	RabbitMQ      *rabbitMQ
+	Kafka         *kafka
 	Redis         *redis
 	OSS           *oss
 	Elasticsearch *elasticsearch
@@ -59,7 +59,7 @@ func configMapping(srv string) {
 	Server.Secret = []byte(runtime_viper.GetString("server.jwt-secret"))
 
 	Mysql = &c.MySQL
-	RabbitMQ = &c.RabbitMQ
+	Kafka = &c.Kafka
 	Redis = &c.Redis
 	OSS = &c.OSS
 	Elasticsearch = &c.Elasticsearch
@@ -101,10 +101,10 @@ func InitForTest() {
 		Charset:  "utf8mb4",
 	}
 
-	RabbitMQ = &rabbitMQ{
-		Addr:     "127.0.0.1:5672",
-		Username: "tiktok",
-		Password: "tiktok",
+	Kafka = &kafka{
+		Brokers: []string{"127.0.0.1:9092"},
+		Topic:   "chat-message",
+		GroupID: "chat-service",
 	}
 
 	Redis = &redis{

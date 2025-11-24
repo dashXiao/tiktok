@@ -24,7 +24,6 @@ type MiddleMessage struct {
 	ToUserId   int64
 	FromUserId int64
 	Content    string
-	IsReadNum  []int64
 	CreatedAt  string
 }
 type MessageBuild struct {

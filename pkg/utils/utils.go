@@ -18,16 +18,6 @@ func GetMysqlDSN() string {
 	return dsn
 }
 
-func GetMQUrl() string {
-	if config.RabbitMQ == nil {
-		panic("config not found")
-	}
-
-	url := strings.Join([]string{"amqp://", config.RabbitMQ.Username, ":", config.RabbitMQ.Password, "@", config.RabbitMQ.Addr, "/"}, "")
-
-	return url
-}
-
 func AddrCheck(addr string) bool {
 	l, err := net.Listen("tcp", addr)
 

@@ -5,13 +5,15 @@ mkdir -p data/kibana
 mkdir -p data/elasticsearch
 mkdir -p data/mysql
 mkdir -p data/redis
-mkdir -p data/rabbitmq
+mkdir -p data/zookeeper/data
+mkdir -p data/zookeeper/log
+mkdir -p data/kafka/data
 mkdir -p data/etcd
 
 mkdir -p config/elasticsearch
 mkdir -p config/mysql
 mkdir -p config/redis
-mkdir -p config/rabbitmq
+mkdir -p config/kafka
 mkdir -p config/etcd
 
 IMAGE_NAME="tiktok"

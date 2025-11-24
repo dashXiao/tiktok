@@ -121,7 +121,7 @@ If you want a specific tutorial on how to use it, please visit: [deploy docs](./
 ├── dal
 │   ├── cache       # redis
 │   ├── db          # MySQL
-│   └── mq          # RabbitMQ
+│   └── mq          # Kafka
 ├── handler.go
 ├── kitex_info.yaml
 ├── main.go

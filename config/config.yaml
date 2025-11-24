@@ -37,10 +37,12 @@ elasticsearch:
 etcd:
   addr: etcd:2379
 
-rabbitmq:
-  addr: rabiitmq:5672
-  username: tiktok
-  password: tiktok
+kafka:
+  brokers:
+    - kafka:9092
+  topic: chat-messages
+  group-id: chat-service
+  dead-letter-topic: chat-messages-dlq
 
 redis:
   addr: redis:6379

@@ -119,7 +119,7 @@ deploy
 ├── dal
 │   ├── cache       # redis
 │   ├── db          # MySQL
-│   └── mq          # RabbitMQ
+│   └── mq          # Kafka
 ├── handler.go
 ├── kitex_info.yaml
 ├── main.go

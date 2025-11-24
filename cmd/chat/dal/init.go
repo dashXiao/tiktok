@@ -9,6 +9,5 @@ import (
 func Init() {
 	db.Init()
 	cache.Init()
-	mq.InitRabbitMQ()
-	mq.InitChatMQ()
+	mq.Init()
 }

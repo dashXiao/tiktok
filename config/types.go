@@ -29,10 +29,11 @@ type etcd struct {
 	Addr string
 }
 
-type rabbitMQ struct {
-	Addr     string
-	Username string
-	Password string
+type kafka struct {
+	Brokers         []string
+	Topic           string
+	GroupID         string `mapstructure:"group-id"`
+	DeadLetterTopic string `mapstructure:"dead-letter-topic"`
 }
 
 type redis struct {
@@ -58,7 +59,7 @@ type config struct {
 	Snowflake     snowflake
 	MySQL         mySQL
 	Etcd          etcd
-	RabbitMQ      rabbitMQ
+	Kafka         kafka
 	Redis         redis
 	OSS           oss
 	Elasticsearch elasticsearch
