@@ -22,7 +22,6 @@ func VideoList(list []*video.Video) []*api.Video {
 				Signature:       &data.Author.Signature,
 				TotalFavorited:  &data.Author.TotalFavorited,
 				WorkCount:       &data.Author.WorkCount,
-				FavoriteCount:   &data.Author.FavoriteCount,
 			},
 			PlayURL:       data.PlayUrl,
 			CoverURL:      data.CoverUrl,

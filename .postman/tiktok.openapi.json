@@ -37,7 +37,7 @@
                   "username": {
                     "type": "string",
                     "description": "账号",
-                    "example": "ozline"
+                    "example": "1"
                   },
                   "password": {
                     "type": "string",
@@ -87,7 +87,7 @@
                   "username": {
                     "type": "string",
                     "description": "账号",
-                    "example": "ozline"
+                    "example": "1"
                   },
                   "password": {
                     "type": "string",
@@ -133,7 +133,7 @@
             "in": "query",
             "description": "用户id",
             "required": false,
-            "example": "10001",
+            "example": "10000",
             "schema": {
               "type": "string"
             }
@@ -388,10 +388,6 @@
                   },
                   "to_user_id": {
                     "type": "string"
-                  },
-                  "action_type": {
-                    "type": "integer",
-                    "description": "似乎只有1"
                   },
                   "content": {
                     "type": "string"
@@ -733,7 +729,7 @@
     },
     "/publish/action/": {
       "post": {
-        "summary": "投稿接口",
+        "summary": "投稿接口（支持自定义封面）",
         "x-apifox-folder": "基础接口",
         "x-apifox-status": "developing",
         "deprecated": false,
@@ -751,6 +747,11 @@
                   "data": {
                     "type": "string",
                     "example": "file:///Users/ozliinex/Downloads/Fst5-h6WwAAc9nE.jpeg",
+                    "format": "binary"
+                  },
+                  "cover_data": {
+                    "type": "string",
+                    "description": "可选封面图，若不传则自动截取视频首帧",
                     "format": "binary"
                   },
                   "token": {

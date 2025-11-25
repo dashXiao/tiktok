@@ -27,7 +27,6 @@ func Video(data *db.Video, user *user.User, favoriteCount int64, commentCount in
 			Signature:       user.Signature,
 			TotalFavorited:  user.TotalFavorited,
 			WorkCount:       user.WorkCount,
-			FavoriteCount:   user.FavoritedCount,
 		},
 		PlayUrl:       data.PlayUrl,
 		CoverUrl:      data.CoverUrl,
@@ -35,6 +34,7 @@ func Video(data *db.Video, user *user.User, favoriteCount int64, commentCount in
 		CommentCount:  commentCount,
 		IsFavorite:    isFavorite,
 		Title:         data.Title,
+		UploadTime:    data.CreatedAt.Unix(),
 	}
 }
 func VideoList(data []db.Video, userList []*user.User, favoriteCountList []int64, commentCountList []int64, isFavoriteList []bool) []*video.Video {
@@ -63,7 +63,6 @@ func VideoLiked(data *db.Video, user *user.User, favoriteCount int64, commentCou
 			Signature:       user.Signature,
 			TotalFavorited:  user.TotalFavorited,
 			WorkCount:       user.WorkCount,
-			FavoriteCount:   user.FavoritedCount,
 		},
 		PlayUrl:       data.PlayUrl,
 		CoverUrl:      data.CoverUrl,
@@ -71,6 +70,7 @@ func VideoLiked(data *db.Video, user *user.User, favoriteCount int64, commentCou
 		CommentCount:  commentCount,
 		IsFavorite:    true,
 		Title:         data.Title,
+		UploadTime:    data.CreatedAt.Unix(),
 	}
 }
 func VideoLikedList(data []db.Video, userList []*user.User, favoriteCountList []int64, commentCountList []int64) []*video.Video {

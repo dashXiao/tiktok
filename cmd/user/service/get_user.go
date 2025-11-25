@@ -58,13 +58,6 @@ func (s *UserService) GetUser(req *user.InfoRequest) (*user.User, error) {
 		return nil, err
 	}
 
-	// 喜欢数量
-	userResp.FavoritedCount, err = rpc.GetFavoriteCount(s.ctx, &interaction.UserFavoriteCountRequest{UserId: userModel.Id, Token: req.Token})
-
-	if err != nil {
-		return nil, err
-	}
-
 	// 获赞数量
 	userResp.TotalFavorited, err = rpc.GetTotalFavorited(s.ctx, &interaction.UserTotalFavoritedRequest{UserId: userModel.Id, Token: req.Token})
 

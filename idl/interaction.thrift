@@ -16,6 +16,7 @@ struct Video {
     6: required i64 comment_count,
     7: required bool is_favorite,
     8: required string title,
+    9: required i64 upload_time,
 }
 
 struct Comment {
@@ -63,16 +64,6 @@ struct UserTotalFavoritedRequest {
 struct UserTotalFavoritedResponse {
     1: required BaseResp base,
     2: required i64 total_favorited,
-}
-
-struct UserFavoriteCountRequest {
-    1: required i64 user_id,
-    2: required string token,
-}
-
-struct UserFavoriteCountResponse {
-    1: required BaseResp base,
-    2: required i64 like_count,
 }
 
 struct IsFavoriteRequest {
@@ -123,7 +114,6 @@ service InteractionService {
     FavoriteActionResponse FavoriteAction(1: FavoriteActionRequest req)
     FavoriteListResponse FavoriteList(1 : FavoriteListRequest req)
     VideoFavoritedCountResponse VideoFavoritedCount(1 : VideoFavoritedCountRequest req)
-    UserFavoriteCountResponse UserFavoriteCount(1 : UserFavoriteCountRequest req)
     UserTotalFavoritedResponse UserTotalFavorited(1 : UserTotalFavoritedRequest req)
     IsFavoriteResponse IsFavorite(1 : IsFavoriteRequest req)
     CommentActionResponse CommentAction(1 : CommentActionRequest req)

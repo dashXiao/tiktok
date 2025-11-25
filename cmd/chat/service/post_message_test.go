@@ -15,10 +15,9 @@ func testPostMessage(t *testing.T) {
 		t.Fail()
 	}
 	req := &chat.MessagePostRequest{
-		Token:      token,
-		ToUserId:   to_user_id,
-		Content:    content,
-		ActionType: &ac_type,
+		Token:    token,
+		ToUserId: to_user_id,
+		Content:  content,
 	}
 	err = chatservice.SendMessage(req, from_user_id, create_at)
 	if err != nil {

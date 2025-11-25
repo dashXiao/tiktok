@@ -12,7 +12,6 @@ import (
 var (
 	chatservice *ChatService
 	create_at   string = time.Now().Format(time.RFC3339)
-	ac_type     int64  = 1
 )
 
 const (

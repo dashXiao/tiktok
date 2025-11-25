@@ -68,11 +68,12 @@ func PublishList(ctx context.Context, req *video.GetPublishListRequest) ([]*vide
 	return resp.VideoList, nil
 }
 
-func VideoPublish(ctx context.Context, req *video.PutVideoRequest) error {
-	resp, err := videoClient.PutVideo(ctx, &video.PutVideoRequest{
+func VideoPublish(ctx context.Context, req *video.UploadVideoRequest) error {
+	resp, err := videoClient.UploadVideo(ctx, &video.UploadVideoRequest{
 		VideoFile: req.VideoFile,
 		Title:     req.Title,
 		Token:     req.Token,
+		CoverFile: req.CoverFile,
 	})
 
 	if err != nil {

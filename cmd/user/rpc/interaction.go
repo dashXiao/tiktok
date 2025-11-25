@@ -42,20 +42,6 @@ func InitInteractionRPC() {
 	interactionClient = c
 }
 
-func GetFavoriteCount(ctx context.Context, req *interaction.UserFavoriteCountRequest) (int64, error) {
-	resp, err := interactionClient.UserFavoriteCount(ctx, req)
-
-	if err != nil {
-		return -1, err
-	}
-
-	if resp.Base.Code != errno.SuccessCode {
-		return -1, errno.NewErrNo(resp.Base.Code, *resp.Base.Msg)
-	}
-
-	return resp.LikeCount, nil
-}
-
 func GetTotalFavorited(ctx context.Context, req *interaction.UserTotalFavoritedRequest) (int64, error) {
 	resp, err := interactionClient.UserTotalFavorited(ctx, req)
 

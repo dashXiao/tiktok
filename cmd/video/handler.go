@@ -132,10 +132,9 @@ func (s *VideoServiceImpl) GetVideoIDByUid(ctx context.Context, req *video.GetVi
 	return
 }
 
-// PutVideo implements the VideoServiceImpl interface.
-func (s *VideoServiceImpl) PutVideo(ctx context.Context, req *video.PutVideoRequest) (resp *video.PutVideoResponse, err error) {
-	// *** Put??? 谁教你这么命名的 ***
-	resp = new(video.PutVideoResponse)
+// UploadVideo implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) UploadVideo(ctx context.Context, req *video.UploadVideoRequest) (resp *video.UploadVideoResponse, err error) {
+	resp = new(video.UploadVideoResponse)
 
 	claim, err := utils.CheckToken(req.Token)
 	if err != nil {

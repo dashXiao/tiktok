@@ -384,20 +384,6 @@ func (p *User) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
-		case 11:
-			if fieldTypeId == thrift.I64 {
-				l, err = p.FastReadField11(buf[offset:])
-				offset += l
-				if err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-				offset += l
-				if err != nil {
-					goto SkipFieldError
-				}
-			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -582,19 +568,6 @@ func (p *User) FastReadField10(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *User) FastReadField11(buf []byte) (int, error) {
-	offset := 0
-
-	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-		p.FavoriteCount = &v
-
-	}
-	return offset, nil
-}
-
 // for compatibility
 func (p *User) FastWrite(buf []byte) int {
 	return 0
@@ -610,7 +583,6 @@ func (p *User) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) in
 		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 		offset += p.fastWriteField9(buf[offset:], binaryWriter)
 		offset += p.fastWriteField10(buf[offset:], binaryWriter)
-		offset += p.fastWriteField11(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField7(buf[offset:], binaryWriter)
@@ -635,7 +607,6 @@ func (p *User) BLength() int {
 		l += p.field8Length()
 		l += p.field9Length()
 		l += p.field10Length()
-		l += p.field11Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -746,17 +717,6 @@ func (p *User) fastWriteField10(buf []byte, binaryWriter bthrift.BinaryWriter) i
 	return offset
 }
 
-func (p *User) fastWriteField11(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	if p.IsSetFavoriteCount() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "favorite_count", thrift.I64, 11)
-		offset += bthrift.Binary.WriteI64(buf[offset:], *p.FavoriteCount)
-
-		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
-	}
-	return offset
-}
-
 func (p *User) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("id", thrift.I64, 1)
@@ -855,17 +815,6 @@ func (p *User) field10Length() int {
 	if p.IsSetWorkCount() {
 		l += bthrift.Binary.FieldBeginLength("work_count", thrift.I64, 10)
 		l += bthrift.Binary.I64Length(*p.WorkCount)
-
-		l += bthrift.Binary.FieldEndLength()
-	}
-	return l
-}
-
-func (p *User) field11Length() int {
-	l := 0
-	if p.IsSetFavoriteCount() {
-		l += bthrift.Binary.FieldBeginLength("favorite_count", thrift.I64, 11)
-		l += bthrift.Binary.I64Length(*p.FavoriteCount)
 
 		l += bthrift.Binary.FieldEndLength()
 	}

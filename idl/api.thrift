@@ -13,7 +13,6 @@ struct User {
     8: optional string signature,
     9: optional i64 total_favorited,
     10: optional i64 work_count,
-    11: optional i64 favorite_count,
 }
 
 struct Video {
@@ -45,7 +44,6 @@ struct FriendUser {
     8: optional string signature,
     9: optional i64 total_favorited,
     10: optional i64 work_count,
-    11: optional i64 favorite_count,
     12: optional string message,
     13: required i64 msgType, // 0 => 当前请求用户接收的消息 1=>当前请求用户发送的消息
 }
@@ -239,8 +237,7 @@ struct MessageChatResponse {
 struct MessageActionRequest {
     1: required string token,
     2: required i64 to_user_id,
-    3: required i64 action_type, // 1-发送消息
-    4: required string content,
+    3: required string content,
 }
 
 struct MessageActionResponse {

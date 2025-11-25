@@ -11,7 +11,7 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	MessagePost(ctx context.Context, req *chat.MessagePostRequest, callOptions ...callopt.Option) (r *chat.MessagePostReponse, err error)
+	MessagePost(ctx context.Context, req *chat.MessagePostRequest, callOptions ...callopt.Option) (r *chat.MessagePostResponse, err error)
 	MessageList(ctx context.Context, req *chat.MessageListRequest, callOptions ...callopt.Option) (r *chat.MessageListResponse, err error)
 }
 
@@ -44,7 +44,7 @@ type kMessageServiceClient struct {
 	*kClient
 }
 
-func (p *kMessageServiceClient) MessagePost(ctx context.Context, req *chat.MessagePostRequest, callOptions ...callopt.Option) (r *chat.MessagePostReponse, err error) {
+func (p *kMessageServiceClient) MessagePost(ctx context.Context, req *chat.MessagePostRequest, callOptions ...callopt.Option) (r *chat.MessagePostResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MessagePost(ctx, req)
 }

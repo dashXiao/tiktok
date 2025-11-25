@@ -12,7 +12,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	Feed(ctx context.Context, Req *video.FeedRequest, callOptions ...callopt.Option) (r *video.FeedResponse, err error)
-	PutVideo(ctx context.Context, Req *video.PutVideoRequest, callOptions ...callopt.Option) (r *video.PutVideoResponse, err error)
+	UploadVideo(ctx context.Context, Req *video.UploadVideoRequest, callOptions ...callopt.Option) (r *video.UploadVideoResponse, err error)
 	GetFavoriteVideoInfo(ctx context.Context, Req *video.GetFavoriteVideoInfoRequest, callOptions ...callopt.Option) (r *video.GetFavoriteVideoInfoResponse, err error)
 	GetPublishList(ctx context.Context, Req *video.GetPublishListRequest, callOptions ...callopt.Option) (r *video.GetPublishListResponse, err error)
 	GetWorkCount(ctx context.Context, Req *video.GetWorkCountRequest, callOptions ...callopt.Option) (r *video.GetWorkCountResponse, err error)
@@ -53,9 +53,9 @@ func (p *kVideoServiceClient) Feed(ctx context.Context, Req *video.FeedRequest, 
 	return p.kClient.Feed(ctx, Req)
 }
 
-func (p *kVideoServiceClient) PutVideo(ctx context.Context, Req *video.PutVideoRequest, callOptions ...callopt.Option) (r *video.PutVideoResponse, err error) {
+func (p *kVideoServiceClient) UploadVideo(ctx context.Context, Req *video.UploadVideoRequest, callOptions ...callopt.Option) (r *video.UploadVideoResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.PutVideo(ctx, Req)
+	return p.kClient.UploadVideo(ctx, Req)
 }
 
 func (p *kVideoServiceClient) GetFavoriteVideoInfo(ctx context.Context, Req *video.GetFavoriteVideoInfoRequest, callOptions ...callopt.Option) (r *video.GetFavoriteVideoInfoResponse, err error) {

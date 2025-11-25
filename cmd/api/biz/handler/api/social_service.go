@@ -135,10 +135,9 @@ func MessageAction(ctx context.Context, c *app.RequestContext) {
 	resp := new(api.MessageActionResponse)
 
 	err = rpc.MessageAction(ctx, &chat.MessagePostRequest{
-		Token:      req.Token,
-		ToUserId:   req.ToUserID,
-		ActionType: &req.ActionType,
-		Content:    req.Content,
+		Token:    req.Token,
+		ToUserId: req.ToUserID,
+		Content:  req.Content,
 	})
 
 	if err != nil {

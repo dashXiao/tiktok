@@ -20,7 +20,7 @@ func TestCreateVideo(t *testing.T) {
 	rpc.Init()
 	videoService := service.NewVideoService(context.Background())
 	// 测试token不存在导致的errno.AuthorizationFailedError错误
-	_, err := videoService.CreateVideo(&video.PutVideoRequest{VideoFile: nil,
+	_, err := videoService.CreateVideo(&video.UploadVideoRequest{VideoFile: nil,
 		Title: "test_title",
 		Token: "",
 	}, "test_video_URL", "test_cover_URL")
@@ -34,7 +34,7 @@ func TestCreateVideo(t *testing.T) {
 		t.Error(err)
 		t.Fail()
 	}
-	_, err = videoService.CreateVideo(&video.PutVideoRequest{VideoFile: nil,
+	_, err = videoService.CreateVideo(&video.UploadVideoRequest{VideoFile: nil,
 		Title: "test_title",
 		Token: token,
 	}, "test_video_URL", "test_cover_URL")

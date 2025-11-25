@@ -157,6 +157,7 @@ func PublishAction(ctx context.Context, c *app.RequestContext) {
 		pack.SendFailResponse(c, errno.FileUploadError.WithMessage(err.Error()))
 		return
 	}
+	defer fileContent.Close()
 
 	byteContainer, err := io.ReadAll(fileContent)
 
@@ -169,10 +170,31 @@ func PublishAction(ctx context.Context, c *app.RequestContext) {
 		pack.SendFailResponse(c, errno.NotVideoFile)
 	}
 
-	err = rpc.VideoPublish(ctx, &video.PutVideoRequest{
+	var coverBytes []byte
+	if coverHeader, coverErr := c.FormFile("cover_data"); coverErr == nil {
+		coverFile, coverErr := coverHeader.Open()
+		if coverErr != nil {
+			pack.SendFailResponse(c, errno.FileUploadError.WithMessage(coverErr.Error()))
+			return
+		}
+		defer coverFile.Close()
+
+		coverBytes, coverErr = io.ReadAll(coverFile)
+		if coverErr != nil {
+			pack.SendFailResponse(c, errno.FileUploadError.WithMessage(coverErr.Error()))
+			return
+		}
+		if !filetype.IsImage(coverBytes) {
+			pack.SendFailResponse(c, errno.ParamError.WithMessage("cover must be an image"))
+			return
+		}
+	}
+
+	err = rpc.VideoPublish(ctx, &video.UploadVideoRequest{
 		VideoFile: byteContainer,
 		Title:     req.Title,
 		Token:     req.Token,
+		CoverFile: coverBytes,
 	})
 
 	if err != nil {

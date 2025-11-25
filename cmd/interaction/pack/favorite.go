@@ -22,7 +22,6 @@ func BuildUser(data *video.User) *user.User {
 		BackgroundImage: data.BackgroundImage,
 		Signature:       data.Signature,
 		WorkCount:       data.WorkCount,
-		FavoritedCount:  data.FavoriteCount,
 		TotalFavorited:  data.TotalFavorited,
 	}
 }
@@ -42,6 +41,7 @@ func BuildVideo(data *video.Video) *interaction.Video {
 		CommentCount:  data.CommentCount,
 		IsFavorite:    data.IsFavorite,
 		Title:         data.Title,
+		UploadTime:    data.UploadTime,
 	}
 }
 

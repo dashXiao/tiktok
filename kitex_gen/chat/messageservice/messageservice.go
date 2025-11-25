@@ -82,7 +82,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) MessagePost(ctx context.Context, req *chat.MessagePostRequest) (r *chat.MessagePostReponse, err error) {
+func (p *kClient) MessagePost(ctx context.Context, req *chat.MessagePostRequest) (r *chat.MessagePostResponse, err error) {
 	var _args chat.MessageServiceMessagePostArgs
 	_args.Req = req
 	var _result chat.MessageServiceMessagePostResult

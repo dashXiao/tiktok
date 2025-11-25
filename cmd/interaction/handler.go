@@ -200,26 +200,6 @@ func (s *InteractionServiceImpl) VideoFavoritedCount(ctx context.Context, req *i
 	return
 }
 
-// UserFavoriteCount implements the InteractionServiceImpl interface.
-func (s *InteractionServiceImpl) UserFavoriteCount(ctx context.Context, req *interaction.UserFavoriteCountRequest) (resp *interaction.UserFavoriteCountResponse, err error) {
-	resp = new(interaction.UserFavoriteCountResponse)
-
-	if _, err := utils.CheckToken(req.Token); err != nil {
-		resp.Base = pack.BuildBaseResp(errno.AuthorizationFailedError)
-		return resp, nil
-	}
-
-	likeCount, err := service.NewInteractionService(ctx).GetUserFavoriteCount(req)
-	if err != nil {
-		resp.Base = pack.BuildBaseResp(err)
-		return resp, nil
-	}
-
-	resp.Base = pack.BuildBaseResp(nil)
-	resp.LikeCount = likeCount
-	return
-}
-
 // UserTotalFavorited implements the InteractionServiceImpl interface.
 func (s *InteractionServiceImpl) UserTotalFavorited(ctx context.Context, req *interaction.UserTotalFavoritedRequest) (resp *interaction.UserTotalFavoritedResponse, err error) {
 	resp = new(interaction.UserTotalFavoritedResponse)

@@ -1,8 +1,8 @@
 namespace go chat
 
 struct BaseResp {
-    1: i64 code
-    2: string msg
+    1: i64 code,
+    2: string msg,
 }
 
 struct Message {
@@ -14,28 +14,27 @@ struct Message {
 }
 
 struct MessagePostRequest {
-    1: required string token
-    2: required i64 to_user_id
+    1: required string token,
+    2: required i64 to_user_id,
     3: required string content,
-    4:optional i64 action_type,
 }
 
-struct MessagePostReponse {
-    1: BaseResp base
+struct MessagePostResponse {
+    1: BaseResp base,
 }
 
 struct MessageListRequest {
-    1: required string token
-    2: required i64 to_user_id    //  ->对方用户id
+    1: required string token,
+    2: required i64 to_user_id,    //  ->对方用户id
 }
 
 struct MessageListResponse {      
-    1: BaseResp base
-    2: list<Message> message_list //  ->按时间倒序排列
-    3: i64 total
+    1: BaseResp base,
+    2: list<Message> message_list, //  ->按时间倒序排列
+    3: i64 total,
 }
 
 service MessageService {
-    MessagePostReponse MessagePost(1:MessagePostRequest req)
+    MessagePostResponse MessagePost(1:MessagePostRequest req)
     MessageListResponse MessageList(1:MessageListRequest req)
 }

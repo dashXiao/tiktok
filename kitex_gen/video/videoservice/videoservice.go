@@ -23,7 +23,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	handlerType := (*video.VideoService)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"Feed":                 kitex.NewMethodInfo(feedHandler, newFeedArgs, newFeedResult, false),
-		"PutVideo":             kitex.NewMethodInfo(putVideoHandler, newPutVideoArgs, newPutVideoResult, false),
+		"UploadVideo":          kitex.NewMethodInfo(uploadVideoHandler, newUploadVideoArgs, newUploadVideoResult, false),
 		"GetFavoriteVideoInfo": kitex.NewMethodInfo(getFavoriteVideoInfoHandler, newGetFavoriteVideoInfoArgs, newGetFavoriteVideoInfoResult, false),
 		"GetPublishList":       kitex.NewMethodInfo(getPublishListHandler, newGetPublishListArgs, newGetPublishListResult, false),
 		"GetWorkCount":         kitex.NewMethodInfo(getWorkCountHandler, newGetWorkCountArgs, newGetWorkCountResult, false),
@@ -196,73 +196,73 @@ func (p *FeedResult) GetResult() interface{} {
 	return p.Success
 }
 
-func putVideoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func uploadVideoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
-		req := new(video.PutVideoRequest)
+		req := new(video.UploadVideoRequest)
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
-		resp, err := handler.(video.VideoService).PutVideo(ctx, req)
+		resp, err := handler.(video.VideoService).UploadVideo(ctx, req)
 		if err != nil {
 			return err
 		}
 		if err := st.SendMsg(resp); err != nil {
 			return err
 		}
-	case *PutVideoArgs:
-		success, err := handler.(video.VideoService).PutVideo(ctx, s.Req)
+	case *UploadVideoArgs:
+		success, err := handler.(video.VideoService).UploadVideo(ctx, s.Req)
 		if err != nil {
 			return err
 		}
-		realResult := result.(*PutVideoResult)
+		realResult := result.(*UploadVideoResult)
 		realResult.Success = success
 	}
 	return nil
 }
-func newPutVideoArgs() interface{} {
-	return &PutVideoArgs{}
+func newUploadVideoArgs() interface{} {
+	return &UploadVideoArgs{}
 }
 
-func newPutVideoResult() interface{} {
-	return &PutVideoResult{}
+func newUploadVideoResult() interface{} {
+	return &UploadVideoResult{}
 }
 
-type PutVideoArgs struct {
-	Req *video.PutVideoRequest
+type UploadVideoArgs struct {
+	Req *video.UploadVideoRequest
 }
 
-func (p *PutVideoArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *UploadVideoArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetReq() {
-		p.Req = new(video.PutVideoRequest)
+		p.Req = new(video.UploadVideoRequest)
 	}
 	return p.Req.FastRead(buf, _type, number)
 }
 
-func (p *PutVideoArgs) FastWrite(buf []byte) (n int) {
+func (p *UploadVideoArgs) FastWrite(buf []byte) (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.FastWrite(buf)
 }
 
-func (p *PutVideoArgs) Size() (n int) {
+func (p *UploadVideoArgs) Size() (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.Size()
 }
 
-func (p *PutVideoArgs) Marshal(out []byte) ([]byte, error) {
+func (p *UploadVideoArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
-		return out, fmt.Errorf("No req in PutVideoArgs")
+		return out, fmt.Errorf("No req in UploadVideoArgs")
 	}
 	return proto.Marshal(p.Req)
 }
 
-func (p *PutVideoArgs) Unmarshal(in []byte) error {
-	msg := new(video.PutVideoRequest)
+func (p *UploadVideoArgs) Unmarshal(in []byte) error {
+	msg := new(video.UploadVideoRequest)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -270,59 +270,59 @@ func (p *PutVideoArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var PutVideoArgs_Req_DEFAULT *video.PutVideoRequest
+var UploadVideoArgs_Req_DEFAULT *video.UploadVideoRequest
 
-func (p *PutVideoArgs) GetReq() *video.PutVideoRequest {
+func (p *UploadVideoArgs) GetReq() *video.UploadVideoRequest {
 	if !p.IsSetReq() {
-		return PutVideoArgs_Req_DEFAULT
+		return UploadVideoArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-func (p *PutVideoArgs) IsSetReq() bool {
+func (p *UploadVideoArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *PutVideoArgs) GetFirstArgument() interface{} {
+func (p *UploadVideoArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-type PutVideoResult struct {
-	Success *video.PutVideoResponse
+type UploadVideoResult struct {
+	Success *video.UploadVideoResponse
 }
 
-var PutVideoResult_Success_DEFAULT *video.PutVideoResponse
+var UploadVideoResult_Success_DEFAULT *video.UploadVideoResponse
 
-func (p *PutVideoResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *UploadVideoResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
-		p.Success = new(video.PutVideoResponse)
+		p.Success = new(video.UploadVideoResponse)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
 
-func (p *PutVideoResult) FastWrite(buf []byte) (n int) {
+func (p *UploadVideoResult) FastWrite(buf []byte) (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.FastWrite(buf)
 }
 
-func (p *PutVideoResult) Size() (n int) {
+func (p *UploadVideoResult) Size() (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.Size()
 }
 
-func (p *PutVideoResult) Marshal(out []byte) ([]byte, error) {
+func (p *UploadVideoResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
-		return out, fmt.Errorf("No req in PutVideoResult")
+		return out, fmt.Errorf("No req in UploadVideoResult")
 	}
 	return proto.Marshal(p.Success)
 }
 
-func (p *PutVideoResult) Unmarshal(in []byte) error {
-	msg := new(video.PutVideoResponse)
+func (p *UploadVideoResult) Unmarshal(in []byte) error {
+	msg := new(video.UploadVideoResponse)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -330,22 +330,22 @@ func (p *PutVideoResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *PutVideoResult) GetSuccess() *video.PutVideoResponse {
+func (p *UploadVideoResult) GetSuccess() *video.UploadVideoResponse {
 	if !p.IsSetSuccess() {
-		return PutVideoResult_Success_DEFAULT
+		return UploadVideoResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-func (p *PutVideoResult) SetSuccess(x interface{}) {
-	p.Success = x.(*video.PutVideoResponse)
+func (p *UploadVideoResult) SetSuccess(x interface{}) {
+	p.Success = x.(*video.UploadVideoResponse)
 }
 
-func (p *PutVideoResult) IsSetSuccess() bool {
+func (p *UploadVideoResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *PutVideoResult) GetResult() interface{} {
+func (p *UploadVideoResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -981,11 +981,11 @@ func (p *kClient) Feed(ctx context.Context, Req *video.FeedRequest) (r *video.Fe
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) PutVideo(ctx context.Context, Req *video.PutVideoRequest) (r *video.PutVideoResponse, err error) {
-	var _args PutVideoArgs
+func (p *kClient) UploadVideo(ctx context.Context, Req *video.UploadVideoRequest) (r *video.UploadVideoResponse, err error) {
+	var _args UploadVideoArgs
 	_args.Req = Req
-	var _result PutVideoResult
-	if err = p.c.Call(ctx, "PutVideo", &_args, &_result); err != nil {
+	var _result UploadVideoResult
+	if err = p.c.Call(ctx, "UploadVideo", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

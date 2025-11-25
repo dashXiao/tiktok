@@ -16,7 +16,6 @@ struct User {
     8: optional string signature,
     9: optional i64 total_favorited,
     10: optional i64 work_count,
-    11: optional i64 favorite_count,
 }
 
 struct FriendUser {

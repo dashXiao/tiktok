@@ -15,8 +15,8 @@ import (
 type MessageServiceImpl struct{}
 
 // MessagePost implements the MessageServiceImpl interface.
-func (s *MessageServiceImpl) MessagePost(ctx context.Context, req *chat.MessagePostRequest) (resp *chat.MessagePostReponse, err error) {
-	resp = new(chat.MessagePostReponse)
+func (s *MessageServiceImpl) MessagePost(ctx context.Context, req *chat.MessagePostRequest) (resp *chat.MessagePostResponse, err error) {
+	resp = new(chat.MessagePostResponse)
 	claim, err := utils.CheckToken(req.Token)
 	if err != nil {
 		resp.Base = pack.BuildBaseResp(errno.AuthorizationFailedError)

@@ -21,7 +21,6 @@ func UserList(list []*follow.User) []*api.User {
 			Signature:       data.Signature,
 			TotalFavorited:  data.TotalFavorited,
 			WorkCount:       data.WorkCount,
-			FavoriteCount:   data.FavoriteCount,
 		})
 	}
 
@@ -43,7 +42,6 @@ func FriendList(list []*follow.FriendUser) []*api.FriendUser {
 			Signature:       data.User.Signature,
 			TotalFavorited:  data.User.TotalFavorited,
 			WorkCount:       data.User.WorkCount,
-			FavoriteCount:   data.User.FavoriteCount,
 			Message:         data.Message,
 			MsgType:         data.MsgType,
 		})

@@ -17,6 +17,5 @@ func User(data *user.User) *api.User {
 		Signature:       &data.Signature,
 		TotalFavorited:  &data.TotalFavorited,
 		WorkCount:       &data.WorkCount,
-		FavoriteCount:   &data.FavoritedCount,
 	}
 }

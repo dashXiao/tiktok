@@ -17,6 +17,5 @@ func User(user *user.User) *follow.User {
 		Signature:       &user.Signature,
 		TotalFavorited:  &user.TotalFavorited,
 		WorkCount:       &user.WorkCount,
-		FavoriteCount:   &user.FavoritedCount,
 	}
 }
