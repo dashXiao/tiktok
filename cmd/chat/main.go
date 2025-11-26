@@ -9,6 +9,7 @@ import (
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/ozline/tiktok/cmd/chat/dal"
+	"github.com/ozline/tiktok/cmd/chat/rpc"
 	"github.com/ozline/tiktok/config"
 	chat "github.com/ozline/tiktok/kitex_gen/chat/messageservice"
 	"github.com/ozline/tiktok/pkg/constants"
@@ -27,6 +28,7 @@ func Init() {
 	config.Init(*path, constants.ChatServiceName)
 
 	dal.Init()
+	rpc.Init()
 
 }
 

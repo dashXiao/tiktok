@@ -37,7 +37,7 @@
                   "username": {
                     "type": "string",
                     "description": "账号",
-                    "example": "1"
+                    "example": ""
                   },
                   "password": {
                     "type": "string",
@@ -87,7 +87,7 @@
                   "username": {
                     "type": "string",
                     "description": "账号",
-                    "example": "1"
+                    "example": ""
                   },
                   "password": {
                     "type": "string",
@@ -133,7 +133,7 @@
             "in": "query",
             "description": "用户id",
             "required": false,
-            "example": "10000",
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -191,7 +191,8 @@
                     "type": "string"
                   },
                   "action_type": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "1-关注 2-取关"
                   }
                 }
               }
@@ -232,7 +233,7 @@
             "in": "query",
             "description": "",
             "required": false,
-            "example": "10000",
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -282,7 +283,7 @@
             "in": "query",
             "description": "",
             "required": false,
-            "example": "10001",
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -332,7 +333,7 @@
             "in": "query",
             "description": "",
             "required": false,
-            "example": "10000",
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -484,11 +485,11 @@
                 "properties": {
                   "token": {
                     "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMDAwMCwiZXhwIjoxNjkzNzMzODY5LCJpYXQiOjE2OTMxMjkwNjksImlzcyI6InRpa3RvayJ9.gJmy4PGfp5_S_G3epUbBPabjPPqhXRKrWpT2_vIRzts"
+                    "example": ""
                   },
                   "video_id": {
                     "type": "string",
-                    "example": "483675103821824000"
+                    "example": ""
                   },
                   "action_type": {
                     "type": "string",
@@ -534,7 +535,7 @@
             "in": "query",
             "description": "",
             "required": false,
-            "example": "10000",
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -544,7 +545,7 @@
             "in": "query",
             "description": "",
             "required": false,
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMDAwMCwiZXhwIjoxNjkzNzMzODY5LCJpYXQiOjE2OTMxMjkwNjksImlzcyI6InRpa3RvayJ9.gJmy4PGfp5_S_G3epUbBPabjPPqhXRKrWpT2_vIRzts",
+            "example": "",
             "schema": {
               "type": "string"
             }
@@ -590,7 +591,7 @@
                   },
                   "video_id": {
                     "type": "string",
-                    "example": "483675103821824000"
+                    "example": ""
                   },
                   "action_type": {
                     "type": "string",
@@ -599,7 +600,7 @@
                   },
                   "comment_text": {
                     "type": "string",
-                    "example": "我想睡觉"
+                    "example": ""
                   },
                   "comment_id": {
                     "type": "string"
@@ -746,7 +747,7 @@
                 "properties": {
                   "data": {
                     "type": "string",
-                    "example": "file:///Users/ozliinex/Downloads/Fst5-h6WwAAc9nE.jpeg",
+                    "example": "",
                     "format": "binary"
                   },
                   "cover_data": {
@@ -756,11 +757,11 @@
                   },
                   "token": {
                     "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMDAwMCwiZXhwIjoxNjkzNzI5ODUyLCJpYXQiOjE2OTMxMjUwNTIsImlzcyI6InRpa3RvayJ9.hYsEzX4qDOrcJIS42dDAngqudXZhVlXr7WaeeXcaV7o"
+                    "example": ""
                   },
                   "title": {
                     "type": "string",
-                    "example": "test!!!"
+                    "example": ""
                   }
                 }
               }
@@ -811,7 +812,7 @@
             "in": "query",
             "description": "",
             "required": false,
-            "example": "10000",
+            "example": "",
             "schema": {
               "type": "string"
             }
