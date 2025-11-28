@@ -4,7 +4,7 @@
 
 [English](../README.md) | 简体中文
 
-tiktok 是一个基于HTTP和RPC协议, 分布式架构的简单抖音后端. 它使用到了 Kitex、Hertz、etcd、MySQL、Docker、Thrift、Elasticsearch和Kibana
+tiktok 是一个基于HTTP和RPC协议, 分布式架构的简单抖音后端. 它使用到了 Kitex、Hertz、etcd、MySQL、Docker、Thrift
 
 # 材料
 
@@ -135,11 +135,6 @@ deploy
 # 测试
 
 你可以把 `.postman/tiktok.openapi.json` 丢到Postman中然后开始测试
-
-# 可视化样例
-
-## Kibana + Elasticsearch
-![kibana](./img/kibana.png)
 
 # 贡献者
 

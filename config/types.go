@@ -49,18 +49,12 @@ type oss struct {
 	MainDirectory   string `mapstructure:"main-directory"`
 }
 
-type elasticsearch struct {
-	Addr string
-	Host string
-}
-
 type config struct {
-	Server        server
-	Snowflake     snowflake
-	MySQL         mySQL
-	Etcd          etcd
-	Kafka         kafka
-	Redis         redis
-	OSS           oss
-	Elasticsearch elasticsearch
+	Server    server
+	Snowflake snowflake
+	MySQL     mySQL
+	Etcd      etcd
+	Kafka     kafka
+	Redis     redis
+	OSS       oss
 }

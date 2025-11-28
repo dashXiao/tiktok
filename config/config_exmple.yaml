@@ -30,10 +30,6 @@ oss:
   bucketname:
   main-directory: tiktok
 
-elasticsearch:
-  addr: 127.0.0.1:9200
-  host: 127.0.0.1
-
 etcd:
   addr: 127.0.0.1:2379
 

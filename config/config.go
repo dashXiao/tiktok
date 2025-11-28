@@ -10,15 +10,14 @@ import (
 )
 
 var (
-	Server        *server
-	Mysql         *mySQL
-	Snowflake     *snowflake
-	Service       *service
-	Etcd          *etcd
-	Kafka         *kafka
-	Redis         *redis
-	OSS           *oss
-	Elasticsearch *elasticsearch
+	Server    *server
+	Mysql     *mySQL
+	Snowflake *snowflake
+	Service   *service
+	Etcd      *etcd
+	Kafka     *kafka
+	Redis     *redis
+	OSS       *oss
 
 	runtime_viper = viper.New()
 )
@@ -62,7 +61,6 @@ func configMapping(srv string) {
 	Kafka = &c.Kafka
 	Redis = &c.Redis
 	OSS = &c.OSS
-	Elasticsearch = &c.Elasticsearch
 	Service = GetService(srv)
 }
 

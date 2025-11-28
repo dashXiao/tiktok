@@ -30,10 +30,6 @@ oss:
   bucketname: dummy-bucket
   main-directory: tiktok
 
-elasticsearch:
-  addr: elasticsearch:9200
-  host: elasticsearch
-
 etcd:
   addr: etcd:2379
 
