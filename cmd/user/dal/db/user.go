@@ -13,9 +13,9 @@ type User struct {
 	Id              int64
 	Username        string
 	Password        string
-	Avatar          string `gorm:"default:https://files.ozline.icu/images/avatar.jpg"`
-	BackgroundImage string `gorm:"default:https://files.ozline.icu/images/BannerImg_221116.jpeg"`
-	Signature       string `gorm:"default:NOT NULL BUT SEEMS NULL"`
+	Avatar          string `gorm:"default:avatar from cmd/user/dal/db/user.go"`
+	BackgroundImage string `gorm:"default:backgroundimage from cmd/user/dal/db/user.go"`
+	Signature       string `gorm:"default:signature from cmd/user/dal/db/user.go"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 	DeletedAt       gorm.DeletedAt `gorm:"index"`
