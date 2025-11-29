@@ -36,12 +36,10 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "账号",
                     "example": ""
                   },
                   "password": {
                     "type": "string",
-                    "description": "密码",
                     "example": "123456"
                   }
                 }
@@ -86,12 +84,10 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "账号",
                     "example": ""
                   },
                   "password": {
                     "type": "string",
-                    "description": "密码",
                     "example": "123456"
                   }
                 }
@@ -131,7 +127,6 @@
           {
             "name": "user_id",
             "in": "query",
-            "description": "用户id",
             "required": false,
             "example": "",
             "schema": {
@@ -141,7 +136,6 @@
           {
             "name": "token",
             "in": "query",
-            "description": "鉴权token",
             "required": false,
             "example": "",
             "schema": {
@@ -192,7 +186,7 @@
                   },
                   "action_type": {
                     "type": "string",
-                    "description": "1-关注 2-取关"
+                    "description": "1-follow 2-unfollow"
                   }
                 }
               }
@@ -493,7 +487,7 @@
                   },
                   "action_type": {
                     "type": "string",
-                    "description": "// 1-点赞, 2-取消点赞",
+                    "description": "// 1-like 2-unlike",
                     "example": "1"
                   }
                 }
@@ -595,7 +589,7 @@
                   },
                   "action_type": {
                     "type": "string",
-                    "description": "1-发布评论，2-删除评论",
+                    "description": "1-comment，2-delete",
                     "example": "1"
                   },
                   "comment_text": {
@@ -752,7 +746,7 @@
                   },
                   "cover_data": {
                     "type": "string",
-                    "description": "可选封面图，若不传则自动截取视频首帧",
+                    "description": "Cover(Optional)",
                     "format": "binary"
                   },
                   "token": {
@@ -842,7 +836,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:10001/douyin",
+      "url": "http://47.243.155.129/douyin",
       "description": "开发环境"
     }
   ]
