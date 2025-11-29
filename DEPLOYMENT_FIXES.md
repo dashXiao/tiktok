@@ -58,12 +58,21 @@ make docker
 
 ### 4. 启动所有微服务
 ```bash
-sh docker-run.sh
+bash docker-run.sh
 ```
 
 ### 注意事项
 - 如果遇到MySQL兼容性问题，可能需要清理数据目录：`rm -rf data/mysql/*`
 - etcd配置推送是必需步骤，微服务从etcd读取配置而不是本地文件
+
+## 终端代理小贴士
+
+如果终端设置了 HTTP/HTTPS 代理，`curl http://localhost:10001/...` 可能被代理截断或无响应。可以在部署/调试会话开始时关闭代理并允许本地主机直连：
+
+```bash
+unset http_proxy https_proxy
+export no_proxy=localhost,127.0.0.1,47.243.155.129
+```
 
 API测试:
 ```bash
@@ -80,3 +89,5 @@ curl "http://localhost:10001/douyin/feed/?latest_time=0"
 - 关注聊天功能
 
 项目现在完全可用！
+
+

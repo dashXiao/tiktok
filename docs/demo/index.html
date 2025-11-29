@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok API 演示面板</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --accent: #34d399;
+      --accent-2: #22d3ee;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.1), transparent 30%), radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.18), transparent 25%), var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", "Segoe UI", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+    h1 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.5px; }
+    p { margin: 6px 0 16px; color: var(--muted); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+    .grid { display: grid; gap: 14px; }
+    .two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1221;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      transition: border 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+    }
+    button {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border: none;
+      color: #0a0f1d;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    .row { display: flex; gap: 10px; align-items: center; }
+    .row > *:first-child { flex: 0 0 auto; }
+    .row > *:last-child { flex: 1; }
+    .pill {
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+    }
+    .muted { color: var(--muted); font-size: 13px; }
+    .field { margin-bottom: 12px; }
+    pre {
+      background: #0b1221;
+      border-radius: 10px;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 13px;
+      margin: 0;
+    }
+    .section-title { margin: 0 0 10px; font-size: 16px; }
+    .response-meta { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+    .hint { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <h1>TikTok API 演示面板</h1>
+  <p>基于 <code>tiktok.openapi.json</code> 自动生成接口列表。填写参数后直接调用后端网关（默认端口 10001，前缀 <code>/douyin</code>）。</p>
+
+  <div class="panel grid">
+    <div class="grid two">
+      <div>
+        <label>基础地址 (Base URL)</label>
+        <input id="baseUrl" placeholder="http://your-ip:10001/douyin" value="">
+        <div class="hint">默认读取 OpenAPI servers，也可手动改为 ECS 公网 IP 或域名。</div>
+      </div>
+      <div>
+        <label>选择接口</label>
+        <select id="operation"></select>
+        <div class="hint" id="opHint"></div>
+      </div>
+    </div>
+
+    <div id="paramsPanel" class="grid two"></div>
+    <div id="bodyPanel" class="grid two"></div>
+
+    <div class="row">
+      <span class="pill" id="methodPill">GET</span>
+      <button id="sendBtn">发送请求</button>
+    </div>
+
+    <div class="grid two">
+      <div>
+        <h3 class="section-title">响应</h3>
+        <div class="response-meta" id="respMeta">未发送</div>
+        <pre id="responseBox">等待请求...</pre>
+      </div>
+      <div>
+        <h3 class="section-title">cURL</h3>
+        <pre id="curlBox"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = { ops: [], current: null };
+
+    function defaultBaseUrl() {
+      try {
+        const u = new URL(location.href);
+        return `${u.protocol}//${u.hostname}:10001/douyin`;
+      } catch (_) {
+        return "http://localhost:10001/douyin";
+      }
+    }
+
+    function trimTrailingSlash(str) {
+      if (!str) return str;
+      return str.endsWith("/") ? str.slice(0, -1) : str;
+    }
+
+    async function loadOpenAPI() {
+      const responseBox = document.getElementById("responseBox");
+      try {
+        const res = await fetch("tiktok.openapi.json", { cache: "no-cache" });
+        if (!res.ok) throw new Error("fetch failed: " + res.status);
+        const api = await res.json();
+        const baseFromServer = (api.servers && api.servers[0] && api.servers[0].url) || "";
+        const suggestedBase = trimTrailingSlash(baseFromServer || defaultBaseUrl());
+        document.getElementById("baseUrl").value = suggestedBase;
+
+        const paths = api.paths || {};
+        Object.keys(paths).forEach((path) => {
+          const methods = paths[path] || {};
+          Object.keys(methods).forEach((method) => {
+            const detail = methods[method] || {};
+            const bodyProps =
+              detail.requestBody &&
+              detail.requestBody.content &&
+              detail.requestBody.content["multipart/form-data"] &&
+              detail.requestBody.content["multipart/form-data"].schema &&
+              detail.requestBody.content["multipart/form-data"].schema.properties
+                ? detail.requestBody.content["multipart/form-data"].schema.properties
+                : {};
+            state.ops.push({
+              id: `${method.toUpperCase()} ${path}`,
+              method: method.toUpperCase(),
+              path,
+              summary: detail.summary || `${method.toUpperCase()} ${path}`,
+              params: detail.parameters || [],
+              bodyProps: bodyProps,
+            });
+          });
+        });
+        state.ops.sort((a, b) => a.path.localeCompare(b.path));
+        renderOperations();
+      } catch (err) {
+        console.error("Load OpenAPI failed", err);
+        responseBox.textContent = "加载 OpenAPI 失败: " + err;
+      }
+    }
+
+    function renderOperations() {
+      const select = document.getElementById("operation");
+      select.innerHTML = "";
+      state.ops.forEach((op, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = `${op.method} ${op.path} — ${op.summary}`;
+        select.appendChild(opt);
+      });
+      onOperationChange();
+      select.addEventListener("change", onOperationChange);
+    }
+
+    function onOperationChange() {
+      const select = document.getElementById("operation");
+      state.current = state.ops[Number(select.value) || 0];
+      document.getElementById("methodPill").textContent = state.current.method;
+      document.getElementById("opHint").textContent = state.current.summary;
+      renderParams();
+      renderBody();
+      updateCurl();
+    }
+
+    function renderParams() {
+      const panel = document.getElementById("paramsPanel");
+      panel.innerHTML = "";
+      const params = (state.current && state.current.params ? state.current.params : []).filter(function (p) { return p.in === "query"; });
+      if (!params.length) {
+        panel.innerHTML = '<div class="muted">此接口无查询参数。</div>';
+        return;
+      }
+      params.forEach(p => {
+        const wrap = document.createElement("div");
+        wrap.className = "field";
+        wrap.innerHTML = `
+          <label>${p.name}${p.required ? " *" : ""}</label>
+          <input data-kind="query" data-name="${p.name}" placeholder="${p.description || ""}" value="${p.example || ""}">
+          <div class="hint">${p.description || ""}</div>
+        `;
+        panel.appendChild(wrap);
+      });
+    }
+
+    function renderBody() {
+      const panel = document.getElementById("bodyPanel");
+      panel.innerHTML = "";
+      const props = (state.current && state.current.bodyProps) || {};
+      const entries = Object.entries(props);
+      if (!entries.length) {
+        panel.innerHTML = '<div class="muted">此接口无表单参数。</div>';
+        return;
+      }
+      entries.forEach(([name, meta]) => {
+        const isFile = meta.format === "binary";
+        const wrap = document.createElement("div");
+        wrap.className = "field";
+        wrap.innerHTML = `
+          <label>${name}${meta.description ? " — " + meta.description : ""}</label>
+          ${isFile ? `<input type="file" data-kind="body" data-name="${name}">` :
+            `<input data-kind="body" data-name="${name}" placeholder="${meta.description || ""}" value="${meta.example || ""}">`}
+          <div class="hint">${meta.example ? `示例：${meta.example}` : ""}</div>
+        `;
+        panel.appendChild(wrap);
+      });
+    }
+
+    async function sendRequest() {
+      if (!state.current) return;
+      const base = trimTrailingSlash(document.getElementById("baseUrl").value);
+      const urlObj = new URL(base + state.current.path + (state.current.path.endsWith("/") ? "" : "/"));
+      const method = state.current.method;
+
+      document.querySelectorAll('input[data-kind="query"]').forEach(input => {
+        if (input.value !== "") urlObj.searchParams.set(input.dataset.name, input.value);
+      });
+
+      const options = { method };
+      const bodyProps = state.current ? (state.current.bodyProps || {}) : {};
+      const hasBody = Object.keys(bodyProps).length > 0 && method !== "GET";
+      if (hasBody) {
+        const fd = new FormData();
+        document.querySelectorAll('input[data-kind="body"]').forEach(input => {
+          if (input.type === "file") {
+            if (input.files[0]) fd.append(input.dataset.name, input.files[0]);
+          } else if (input.value !== "") {
+            fd.append(input.dataset.name, input.value);
+          }
+        });
+        options.body = fd;
+      }
+
+      const start = performance.now();
+      let statusText = "";
+      let bodyText = "";
+      try {
+        const res = await fetch(urlObj.toString(), options);
+        statusText = `${res.status} ${res.statusText}`;
+        bodyText = await res.text();
+      } catch (err) {
+        statusText = "请求失败";
+        bodyText = err.message || String(err);
+      }
+      const duration = (performance.now() - start).toFixed(0);
+      document.getElementById("respMeta").textContent = `${statusText} · ${duration}ms`;
+      document.getElementById("responseBox").textContent = formatJson(bodyText);
+      updateCurl(urlObj.toString(), hasBody);
+    }
+
+    function formatJson(text) {
+      try {
+        return JSON.stringify(JSON.parse(text), null, 2);
+      } catch (e) {
+        return text;
+      }
+    }
+
+    function updateCurl(url = "", hasBody = false) {
+      if (!state.current) return;
+      const base = trimTrailingSlash(document.getElementById("baseUrl").value);
+      const baseUrlForCurl = base + state.current.path + (state.current.path.endsWith("/") ? "" : "/");
+      const urlObj = url ? new URL(url) : new URL(baseUrlForCurl);
+      const queryParts = [];
+      document.querySelectorAll('input[data-kind="query"]').forEach(input => {
+        if (input.value !== "") queryParts.push(`${encodeURIComponent(input.dataset.name)}=${encodeURIComponent(input.value)}`);
+      });
+      if (queryParts.length && !url) {
+        urlObj.search = queryParts.join("&");
+      }
+      const lines = [`curl -X ${state.current.method} "${urlObj.toString()}"`];
+      if (hasBody) {
+        document.querySelectorAll('input[data-kind="body"]').forEach(input => {
+          if (input.type === "file") {
+            if (input.files[0]) lines.push(`  -F "${input.dataset.name}=@${input.files[0].name}"`);
+          } else if (input.value !== "") {
+            lines.push(`  -F "${input.dataset.name}=${input.value}"`);
+          }
+        });
+      }
+      document.getElementById("curlBox").textContent = lines.join(" \\\n");
+    }
+
+    document.getElementById("sendBtn").addEventListener("click", sendRequest);
+    loadOpenAPI().catch(err => {
+      document.getElementById("responseBox").textContent = "加载 OpenAPI 失败: " + err;
+    });
+  </script>
+</body>
+</html>
